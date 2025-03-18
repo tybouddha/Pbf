@@ -14,7 +14,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   sauvgaurderDocumentInfos,
   documentModalRestOuvert,
-} from "../../reducers/document";
+} from "../../../reducers/document";
 import { useFocusEffect } from "@react-navigation/native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 

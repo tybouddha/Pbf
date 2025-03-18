@@ -8,7 +8,7 @@ import {
   Image,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { ajouterPhoto } from "../../reducers/document";
+import { ajouterPhoto } from "../../../reducers/document";
 
 export default function VwStockerImage(props) {
   const dispatch = useDispatch();

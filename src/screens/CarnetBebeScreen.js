@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   Modal,
   TextInput,
-  Image,
 } from "react-native";
 import TemplateView from "./template/TemplateView";
 import React, { useEffect, useState } from "react";

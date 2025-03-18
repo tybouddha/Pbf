@@ -18,8 +18,8 @@ import DateTimePicker from "react-native-modal-datetime-picker";
 
 export default function Profil({ navigation }) {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.value); // Données utilisateur dans le store
-  const projectToken = user.tokenProject; // Récupère le token de projet de l'utilisateur
+  const user = useSelector((state) => state.user.value);
+  const projectToken = user.tokenProject;
   const userToken = user.token;
   // console.log("token :", projectToken);
 
@@ -29,8 +29,6 @@ export default function Profil({ navigation }) {
   const [menstruation, setMenstruation] = useState("");
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const emailRegExp =
-    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   const [passwordModalIsVisible, setPasswordModalIsVisible] = useState(false);
   const openPasswordModalIsVisible = () => setPasswordModalIsVisible(true);
   const closePasswordModalIsVisible = () => setPasswordModalIsVisible(false);
