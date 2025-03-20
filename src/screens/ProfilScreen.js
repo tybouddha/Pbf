@@ -9,11 +9,11 @@ import {
   Platform,
   Modal,
 } from "react-native";
-import TemplateView from "./template/TemplateView";
+import TemplateView from "../components/Template/TemplateView";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { logoutUser } from "../reducers/user";
-import { logOutDocument } from "../reducers/document";
+import { logoutUser } from "../../reducers/user";
+import { logOutDocument } from "../../reducers/document";
 import DateTimePicker from "react-native-modal-datetime-picker";
 
 export default function Profil({ navigation }) {

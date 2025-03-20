@@ -53,7 +53,7 @@ export default function HeaderView(props) {
       <View style={styles.containerLogo}>
         <Image
           style={styles.image}
-          source={require("../../assets/images/logo128.png")}
+          source={require("../../../assets/images/logo128.png")}
           alt="logo"
           resizeMode="contain"
         />

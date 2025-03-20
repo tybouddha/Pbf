@@ -13,7 +13,7 @@ import {
   ScrollView,
 } from "react-native";
 import { Calendar } from "react-native-calendars";
-import TemplateView from "./template/TemplateView";
+import TemplateView from "../components/Template/TemplateView";
 
 export default function AgendaScreen({ navigation }) {
   const mamanRendezVousList = [

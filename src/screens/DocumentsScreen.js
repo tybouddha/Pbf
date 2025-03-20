@@ -9,17 +9,17 @@ import {
   ScrollView,
   TextInput,
 } from "react-native";
-import TemplateView from "./template/TemplateView";
+import TemplateView from "../components/Template/TemplateView";
 import { useEffect, useState } from "react";
 
-import VwAjouterDocument from "./template/VwAjouterDocument";
+import VwAjouterDocument from "../components/Template/VwAjouterDocument";
 import { useSelector, useDispatch } from "react-redux";
 import {
   documentModalRestOuvert,
   doucumentModalResterFermer,
   sauvgaurderDocumentInfos,
   supprimerTousLesPhotos,
-} from "../reducers/document";
+} from "../../reducers/document";
 
 export default function DocumentsScreen({ navigation }) {
   const userRedux = useSelector((state) => state.user.value);

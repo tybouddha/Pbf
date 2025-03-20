@@ -7,18 +7,18 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import AcceuilScreen from "./screens/AcceuilScreen";
-import AgendaScreen from "./screens/AgendaScreen";
-import DocumentsScreen from "./screens/DocumentsScreen";
-import CarnetBebeScreen from "./screens/CarnetBebeScreen";
-import WelcomeScreen from "./screens/WelcomeScreens/WelcomeScreen";
-import CreerProjetScreen from "./screens/WelcomeScreens/CreerProjet";
-import ProfilScreen from "./screens/ProfilScreen";
-import LoginScreen from "./screens/WelcomeScreens/LoginScreen";
-import CameraScreen from "./screens/CameraScreen";
-import InviterScreen from "./screens/WelcomeScreens/InviterScreen";
+import AcceuilScreen from "./src/screens/AcceuilScreen";
+import AgendaScreen from "./src/screens/AgendaScreen";
+import DocumentsScreen from "./src/screens/DocumentsScreen";
+import CarnetBebeScreen from "./src/screens/CarnetBebeScreen";
+import WelcomeScreen from "./src/screens/WelcomeScreens/WelcomeScreen";
+import CreerProjetScreen from "./src/screens/WelcomeScreens/CreerProjet";
+import ProfilScreen from "./src/screens/ProfilScreen";
+import LoginScreen from "./src/screens/WelcomeScreens/LoginScreen";
+import CameraScreen from "./src/screens/CameraScreen";
+import InviterScreen from "./src/screens/WelcomeScreens/InviterScreen";
 
-import IconView from "./screens/NavComposants/IconView";
+import IconView from "./src/components/NavComponents/IconView";
 
 import { useState, useEffect } from "react";
 import * as Font from "expo-font";

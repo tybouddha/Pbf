@@ -3,10 +3,10 @@ import { StyleSheet, TouchableOpacity, View, Modal } from "react-native";
 import { Camera, CameraType, FlashMode } from "expo-camera";
 
 import { useDispatch, useSelector } from "react-redux";
-import { documentModalRestOuvert } from "../reducers/document";
+import { documentModalRestOuvert } from "../../reducers/document";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useIsFocused } from "@react-navigation/native";
-import VwStockerImage from "./template/VwStockerImage";
+import VwStockerImage from "../components/Template/VwStockerImage";
 
 export default function CameraScreen({ navigation }) {
   const dispatch = useDispatch();

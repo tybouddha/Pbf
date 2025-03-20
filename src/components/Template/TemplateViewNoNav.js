@@ -1,13 +1,13 @@
 import { StyleSheet, View, Dimensions, ImageBackground } from "react-native";
 
-import HeaderView from "../NavComposants/Header";
+import HeaderView from "../NavComponents/HeaderView";
 
 export default function TemplateViewNoNav(props) {
   // console.log("-- TemplateViewNoNav 👀");
 
   return (
     <ImageBackground
-      source={require("../../assets/images/projectbaby-background.jpg")}
+      source={require("../../../assets/images/projectbaby-background.jpg")}
       style={styles.background}
     >
       <View style={styles.vwHeader}>

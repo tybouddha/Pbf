@@ -9,7 +9,7 @@ import {
   View,
 } from "react-native";
 import { Calendar } from "react-native-calendars";
-import HeaderView from "../components/HeaderView";
+import HeaderView from "../components/NavComponents/HeaderView";
 import InviteModal from "../components/InviteModal";
 import AgendaModal from "../components/AgendaModal";
 import NutritionGuideModal from "../components/NutritionGuideModal";
@@ -75,7 +75,7 @@ export default function AcceuilScreen({ navigation }) {
   };
   return (
     <ImageBackground
-      source={require("../assets/images/projectbaby-background.jpg")}
+      source={require("../../assets/images/projectbaby-background.jpg")}
       style={styles.background}
     >
       <KeyboardAvoidingView

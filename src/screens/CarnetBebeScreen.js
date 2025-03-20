@@ -7,7 +7,7 @@ import {
   Modal,
   TextInput,
 } from "react-native";
-import TemplateView from "./template/TemplateView";
+import TemplateView from "../components/Template/TemplateView";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import DateTimePicker from "react-native-modal-datetime-picker";
