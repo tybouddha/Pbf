@@ -5,16 +5,17 @@ import {
   KeyboardAvoidingView,
   Platform,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { Calendar } from "react-native-calendars";
 import HeaderView from "../components/NavComponents/HeaderView";
-import InviteModal from "../components/InviteModal";
-import AgendaModal from "../components/AgendaModal";
-import NutritionGuideModal from "../components/NutritionGuideModal";
+import InviteModal from "../components/modal/InviteModal";
+import AgendaModal from "../components/modal/AgendaModal";
+import NutritionGuideModal from "../components/modal/NutritionGuideModal";
+import CustomButton from "../components/shared/CustomButton"; // Réutilisation
 import { useAppointments } from "../hooks/useAppointments";
-import styles from "../styles/AccueilStyles";
+import { useAccueilLogic } from "../hooks/useAcceuilLogic";
+import styles from "../styles/modalStyles/AccueilStyles";
 
 const guideNutritionMaman = [
   "Les besoins nutritionnels lors de la grossesse sont bien spécifiques : les besoins en énergie augmentent dès le 2e trimestre et surtout lors du 3e et des besoins spécifiques apparaissent : besoins supplémentaires en fer, en calcium et en vitamines.",
@@ -34,45 +35,29 @@ const guideNutritionBebe = [
   "L'allaitement maternel est également bénéfique pour la maman car il :permet une perte de poids plus rapide dans les 6 premiers mois après l'accouchement,diminue le risque de survenue ultérieure d'un diabète de type 2,réduit à long terme le risque de cancer du sein ou de l'ovaire avant la ménopause,aurait également un rôle dans la prévention de l'ostéoporose après la ménopause.",
 ];
 
-export default function AcceuilScreen({ navigation }) {
+export default function AccueilScreen({ navigation }) {
   const user = useSelector((state) => state.user.value);
-  const { username, tokenProject, role: userRole } = user;
+  const { username } = user;
+  const { rendezVous, markedDates } = useAppointments(user.tokenProject);
 
-  const [selectedDate, setSelectedDate] = useState("");
-  const [agendaModalVisible, setAgendaModalVisible] = useState(false);
-  const [rendezVousDuJour, setRendezVousDuJour] = useState([]);
-  const [mamanModalVisible, setMamanModalVisible] = useState(false);
-  const [babyModalVisible, setBabyModalVisible] = useState(false);
-  const [inviteModalVisible, setInviteModalVisible] = useState(false);
-  const [inviteRole, setInviteRole] = useState("lecteur");
-  const [inviteLink, setInviteLink] = useState("");
+  const {
+    selectedDate,
+    agendaModalVisible,
+    rendezVousDuJour,
+    handleDayPress,
+    inviteModalVisible,
+    inviteRole,
+    inviteLink,
+    handleInviteSubmit,
+    generateInviteCode,
+    setInviteModalVisible,
+    setInviteRole,
+    setMamanModalVisible,
+    setBabyModalVisible,
+    mamanModalVisible,
+    babyModalVisible,
+  } = useAccueilLogic(user, rendezVous.rdv);
 
-  const { rendezVous, markedDates } = useAppointments(tokenProject);
-
-  const handleDayPress = (day) => {
-    const dateKey = day.dateString;
-    setSelectedDate(dateKey);
-    const dailyAppointments = rendezVous.rdv.filter(
-      (rdv) => rdv.date.split("T")[0] === dateKey
-    );
-    if (dailyAppointments.length > 0) {
-      setRendezVousDuJour(dailyAppointments);
-      setAgendaModalVisible(true);
-    }
-  };
-
-  const handleInviteSubmit = () => {
-    if (userRole !== "propriétaire") {
-      alert("Accès bloqué : réservé au propriétaire");
-    } else {
-      setInviteModalVisible(true);
-    }
-  };
-
-  const generateInviteCode = () => {
-    const link = `${tokenProject}/${inviteRole}`;
-    setInviteLink(link);
-  };
   return (
     <ImageBackground
       source={require("../../assets/images/projectbaby-background.jpg")}
@@ -88,9 +73,10 @@ export default function AcceuilScreen({ navigation }) {
         <Text style={styles.title}>Bienvenue {username} sur BabyProject!</Text>
 
         <View style={styles.div_btn}>
-          <TouchableOpacity style={styles.btn} onPress={handleInviteSubmit}>
-            <Text>Inviter un proche</Text>
-          </TouchableOpacity>
+          <CustomButton
+            title="Inviter un proche"
+            onPress={handleInviteSubmit}
+          />
         </View>
 
         <InviteModal
@@ -121,18 +107,14 @@ export default function AcceuilScreen({ navigation }) {
         />
 
         <View style={styles.viewGuide}>
-          <TouchableOpacity
-            style={styles.alimentationBTN}
+          <CustomButton
+            title="Conseil alimentation bébé"
             onPress={() => setBabyModalVisible(true)}
-          >
-            <Text>Conseil alimentation bébé</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.alimentationBTN}
+          />
+          <CustomButton
+            title="Conseil alimentation maman"
             onPress={() => setMamanModalVisible(true)}
-          >
-            <Text>Conseil alimentation maman</Text>
-          </TouchableOpacity>
+          />
         </View>
 
         <NutritionGuideModal

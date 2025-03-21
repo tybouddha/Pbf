@@ -4,10 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../../reducers/user";
 import TemplateViewNoNav from "../../components/Template/TemplateViewNoNav";
 import VwEchec from "../../components/Template/VwEchec";
-import CustomTextInput from "../../components/CustomTextInput";
-import CustomButton from "../../components/CustomButton";
+import CustomTextInput from "../../components/shared/CustomTextInput";
+import CustomButton from "../../components/shared/CustomButton";
 import { useLoginForm } from "../../hooks/useLoginForm";
-import styles from "../../styles/LoginScreenStyles";
+import styles from "../../styles/screenStyles/LoginScreenStyles";
 
 export default function LoginScreen({ navigation }) {
   const {

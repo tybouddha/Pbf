@@ -1,5 +1,5 @@
 import { Modal, View, Text, ScrollView, TouchableOpacity } from "react-native";
-import styles from "../styles/AccueilStyles";
+import styles from "../../styles/modalStyles/AccueilStyles";
 
 const NutritionGuideModal = ({ visible, onClose, title, content }) => (
   <Modal visible={visible} animationType="slide" transparent>

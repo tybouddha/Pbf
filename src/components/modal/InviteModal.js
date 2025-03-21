@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   Text,
 } from "react-native";
-import styles from "../styles/AccueilStyles";
+import styles from "../../styles/modalStyles/AccueilStyles";
 
 const InviteModal = ({ visible, onClose, role, setRole, link, onGenerate }) => {
   const toggleSwitch = () =>

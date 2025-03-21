@@ -5,10 +5,10 @@ import { loginUser } from "../../../reducers/user";
 import TemplateViewNoNav from "../../components/Template/TemplateViewNoNav";
 import VwEchec from "../../components/Template/VwEchec";
 import DateTimePicker from "react-native-modal-datetime-picker";
-import CustomTextInput from "../../components/CustomTextInput";
-import CustomButton from "../../components/CustomButton";
+import CustomTextInput from "../../components/shared/CustomTextInput";
+import CustomButton from "../../components/shared/CustomButton";
 import { useSignupForm } from "../../hooks/useSingUpForm"; // Hook extrait dans un fichier séparé
-import styles from "../../styles/CreerProjetStyles";
+import styles from "../../styles/screenStyles/CreerProjetStyles";
 
 export default function CreerProjetScreen({ navigation }) {
   const {

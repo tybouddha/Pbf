@@ -1,51 +1,20 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  Dimensions,
-  TouchableOpacity,
-} from "react-native";
+import React from "react";
+import { View, Text, TouchableOpacity } from "react-native";
 import TemplateViewNoNav from "../../components/Template/TemplateViewNoNav";
+import CustomButton from "../../components/shared/CustomButton"; // Réutilisation
+import { useWelcomeNavigation } from "../../hooks/useWelcomeNavigation";
+import styles from "../../styles/screenStyles/WelcomeScreenStyles";
 
 export default function WelcomeScreen({ navigation }) {
-  const pressedLogin = () => {
-    // console.log("- aller à LoginScreen 📢");
-    navigation.navigate("Login");
-  };
-
-  const pressedCreerProjet = () => {
-    // console.log("- aller à pressedCreerProjet 📢");
-    navigation.navigate("CreerProjet");
-  };
-
-  const pressedInviter = () => {
-    console.log("- pressedInviter 📢");
-    navigation.navigate("invite");
-  };
+  const { navigateToLogin, navigateToCreerProjet, navigateToInviter } =
+    useWelcomeNavigation(navigation);
 
   return (
     <TemplateViewNoNav>
       <View style={styles.container}>
-        <View style={styles.vwBtn}>
-          <TouchableOpacity style={styles.btn} onPress={() => pressedLogin()}>
-            <Text style={styles.btnText}>Se connecter</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.vwBtn}>
-          <TouchableOpacity
-            style={styles.btn}
-            onPress={() => pressedCreerProjet()}
-          >
-            <Text style={styles.btnText}>Créer Projet</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.vwBtn}>
-          <TouchableOpacity style={styles.btn} onPress={() => pressedInviter()}>
-            <Text style={styles.btnText}>Compte inviter</Text>
-          </TouchableOpacity>
-        </View>
+        <CustomButton title="Se connecter" onPress={navigateToLogin} />
+        <CustomButton title="Créer Projet" onPress={navigateToCreerProjet} />
+        <CustomButton title="Compte invité" onPress={navigateToInviter} />
       </View>
     </TemplateViewNoNav>
   );
