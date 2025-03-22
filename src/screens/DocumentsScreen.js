@@ -1,253 +1,95 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  Dimensions,
-  TouchableOpacity,
-  Image,
-  Modal,
-  ScrollView,
-  TextInput,
-} from "react-native";
+import React from "react";
+import { View, Text, TouchableOpacity, Image, ScrollView } from "react-native";
 import TemplateView from "../components/Template/TemplateView";
-import { useEffect, useState } from "react";
-
 import VwAjouterDocument from "../components/Template/VwAjouterDocument";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  documentModalRestOuvert,
-  doucumentModalResterFermer,
-  sauvgaurderDocumentInfos,
-  supprimerTousLesPhotos,
-} from "../../reducers/document";
+import SearchModal from "../components/modal/SearchDocumentModal";
+import PhotoModal from "../components/modal/PhotoModal";
+import { useDocumentLogic } from "../hooks/useDocumentLogic";
 import styles from "../styles/screenStyles/DocumentScreenStyles";
 
 export default function DocumentsScreen({ navigation }) {
-  const userRedux = useSelector((state) => state.user.value);
-  const documentRedux = useSelector((state) => state.document.value);
-  const dispatch = useDispatch();
-  const [documentsDonnes, setDocumentsDonnes] = useState([]);
-  const [documentsDonnesRecherche, setDocumentsDonnesRecherche] = useState([]);
-  const [searchInput, setSearchInput] = useState("");
-  const [searchModalVisible, setSearchModalVisible] = useState("");
-  const [photoModalVisible, setPhotoModalVisible] = useState("");
-  const [documentChoisi, setDocumentChoisi] = useState("");
-  const [afficherRechercheScrollView, setAfficherRechercheScrollView] =
-    useState(false);
+  const {
+    documentRedux,
+    documentsDonnes,
+    documentsDonnesRecherche,
+    searchModalVisible,
+    photoModalVisible,
+    documentChoisi,
+    afficherRechercheScrollView,
+    fetchData,
+    fermerModalVwAjouterDoc,
+    cameraScreenFermerModalSansEffacerRedux,
+    poubelleAppuyee,
+    appuyerPhoto,
+    ouvrirModalAjoutDocument,
+    setSearchModalVisible,
+  } = useDocumentLogic(navigation);
 
-  const fermerModalVwAjouterDoc = () => {
-    dispatch(sauvgaurderDocumentInfos({ nom: "", practcien: "", notes: "" }));
-    dispatch(supprimerTousLesPhotos());
-    dispatch(doucumentModalResterFermer());
-  };
-
-  const cameraScreenFermerModalSansEffacerRedux = () => {
-    dispatch(doucumentModalResterFermer());
-  };
-
-  const poubelleAppuyee = (elem) => {
-    if (userRedux.role != "lecteur") {
-      fetch(`${process.env.EXPO_PUBLIC_API_URL}/document/${elem._id}`, {
-        method: "DELETE",
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-          if (data.result) {
-            fetchData();
-          }
-        })
-        .catch((error) =>
-          console.error("Erreur lors de la suppression :", error)
-        );
-    } else {
-      return alert("c'est chitos mon acces est bloqué");
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = () => {
-    fetch(
-      `${process.env.EXPO_PUBLIC_API_URL}/document/${userRedux.tokenProject}`
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        let array = [];
-        for (const elem of data.documentsData) {
-          array.push(elem);
-        }
-        setDocumentsDonnes(array);
-        setDocumentsDonnesRecherche(array);
-      });
-  };
-
-  let cardArr = [];
-  let cardArrRecherche = [];
-
-  const createDocumentCard = (elem, index) => {
-    return (
-      <View key={elem._id} style={styles.card}>
-        <View style={styles.cardRayon1}>
-          <Text style={styles.txtDate}>{elem.dateAjoute.substring(0, 10)}</Text>
-        </View>
-        <View style={styles.cardRayon2}>
-          <View style={styles.cardRayon2Sous}>
-            <View style={styles.cardRayon2SousPracticien}>
-              <Text style={styles.txtLabel}>Practicien: </Text>
-              <Text style={styles.txtPracticien}>{elem.practicien}</Text>
-            </View>
-            <View style={styles.cardRayon2SousPracticien}>
-              <Text style={styles.txtLabel}>Pour qui: </Text>
-              <Text style={styles.txtNom}>{elem.nom}</Text>
-            </View>
+  const createDocumentCard = (elem, index) => (
+    <View key={elem._id} style={styles.card}>
+      <View style={styles.cardRayon1}>
+        <Text style={styles.txtDate}>{elem.dateAjoute.substring(0, 10)}</Text>
+      </View>
+      <View style={styles.cardRayon2}>
+        <View style={styles.cardRayon2Sous}>
+          <View style={styles.cardRayon2SousPracticien}>
+            <Text style={styles.txtLabel}>Practicien: </Text>
+            <Text style={styles.txtPracticien}>{elem.practicien}</Text>
+          </View>
+          <View style={styles.cardRayon2SousPracticien}>
+            <Text style={styles.txtLabel}>Pour qui: </Text>
+            <Text style={styles.txtNom}>{elem.nom}</Text>
           </View>
         </View>
-        <Text style={styles.txtNotes}>{elem.notes}</Text>
-        <View style={styles.vwInputPhotos}>
-          <View key={index} style={styles.photoContainer}>
-            <TouchableOpacity
-              style={{ flex: 1 }}
-              onPress={() => appuyerPhoto(elem)}
-            >
-              <Image
-                source={{ uri: elem.url[0] }}
-                style={styles.imgElemStyle}
-              />
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={styles.vwButonSupprimer}>
+      </View>
+      <Text style={styles.txtNotes}>{elem.notes}</Text>
+      <View style={styles.vwInputPhotos}>
+        <View style={styles.photoContainer}>
           <TouchableOpacity
-            style={styles.btnModal}
-            onPress={() => poubelleAppuyee(elem)}
+            style={{ flex: 1 }}
+            onPress={() => appuyerPhoto(elem)}
           >
-            <Text style={{ color: "white" }}>Supprimer</Text>
+            <Image source={{ uri: elem.url[0] }} style={styles.imgElemStyle} />
           </TouchableOpacity>
         </View>
       </View>
-    );
-  };
+      <View style={styles.vwButonSupprimer}>
+        <TouchableOpacity
+          style={styles.btnModal}
+          onPress={() => poubelleAppuyee(elem)}
+        >
+          <Text style={{ color: "white" }}>Supprimer</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
 
-  documentsDonnes.map((elem, index) => {
-    const card = createDocumentCard(elem, index);
-    cardArr.push(card);
-  });
-
-  documentsDonnesRecherche.map((elem, index) => {
-    const card = createDocumentCard(elem, index);
-    cardArrRecherche.push(card);
-  });
-
-  const searchDocuments = () => {
-    setAfficherRechercheScrollView(true);
-    const newDocumentsDonnes = [];
-    const normalizedSearch = searchInput.trim().toLowerCase(); // Normalise l'entrée de recherche
-    documentsDonnes.forEach((doc) => {
-      const matchesSearch =
-        doc.nom.toLowerCase().includes(normalizedSearch) ||
-        doc.practicien?.toLowerCase().includes(normalizedSearch) ||
-        doc.notes?.toLowerCase().includes(normalizedSearch) ||
-        doc.dateAjoute?.toLowerCase().includes(normalizedSearch);
-      if (matchesSearch) {
-        newDocumentsDonnes.push(doc);
-      }
-    });
-    setDocumentsDonnesRecherche(newDocumentsDonnes);
-    console.log(
-      "length documentsDonnesRecherche: ",
-      documentsDonnesRecherche.length
-    );
-  };
-
-  const appuyerPhoto = (doc) => {
-    setDocumentChoisi(doc);
-    setPhotoModalVisible(true);
-  };
+  const cardArr = documentsDonnes.map(createDocumentCard);
+  const cardArrRecherche = documentsDonnesRecherche.map(createDocumentCard);
 
   return (
     <TemplateView navigation={navigation}>
       <View style={styles.vwInstructions}>
-        <Text style={styles.txtInstructions}> Documents </Text>
+        <Text style={styles.txtInstructions}>Documents</Text>
       </View>
-      <Modal
+      <VwAjouterDocument
         visible={documentRedux.modalOuvert}
-        animationType="fade"
-        transparent={true}
-      >
-        <VwAjouterDocument
-          fermerModal={fermerModalVwAjouterDoc}
-          fermerModalSansEffacer={cameraScreenFermerModalSansEffacerRedux}
-          navigation={navigation}
-          fetchDocumentsData={fetchData}
-        />
-      </Modal>
-      <Modal
+        fermerModal={fermerModalVwAjouterDoc}
+        fermerModalSansEffacer={cameraScreenFermerModalSansEffacerRedux}
+        navigation={navigation}
+        fetchDocumentsData={fetchData}
+      />
+      <SearchModal
         visible={searchModalVisible}
-        animationType="fade"
-        transparent={true}
-      >
-        <Modal
-          visible={photoModalVisible}
-          animationType="fade"
-          transparent={true}
-        >
-          <View style={styles.photoModalContainer}>
-            {documentChoisi && (
-              <Image
-                source={{ uri: documentChoisi?.url[0] }}
-                width={Dimensions.get("screen").width * 0.8}
-                height={Dimensions.get("screen").height * 0.8}
-              />
-            )}
-            <TouchableOpacity
-              onPress={() => setPhotoModalVisible(false)}
-              style={styles.btnModal}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.textButton}>Fermer</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-        <View style={styles.centeredView}>
-          <View style={styles.modalListView}>
-            <Text style={styles.modalTitle}>Rechercher</Text>
-            <TextInput
-              style={styles.listItem}
-              placeholder="Rechercher vos documents"
-              value={searchInput}
-              onChangeText={(text) => setSearchInput(text)}
-            ></TextInput>
-            {afficherRechercheScrollView && (
-              <ScrollView style={styles.scrollView}>
-                {cardArrRecherche}
-              </ScrollView>
-            )}
-            <View style={styles.vwRechercheButons}>
-              <TouchableOpacity
-                onPress={() => searchDocuments()}
-                style={styles.btnModal}
-                activeOpacity={0.8}
-              >
-                <Text style={styles.textButton}>rechercher</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  setAfficherRechercheScrollView(false);
-                  setSearchModalVisible(false);
-                  setSearchInput("");
-                }}
-                style={styles.btnModal}
-                activeOpacity={0.8}
-              >
-                <Text style={styles.textButton}>Fermer</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
+        cardArrRecherche={cardArrRecherche}
+        afficherRechercheScrollView={afficherRechercheScrollView}
+        onClose={() => setSearchModalVisible(false)}
+      />
+      <PhotoModal
+        visible={photoModalVisible}
+        documentChoisi={documentChoisi}
+        onClose={() => setPhotoModalVisible(false)}
+      />
       <View style={styles.container}>
         <View style={styles.vwHaut}>
           <TouchableOpacity
@@ -258,17 +100,12 @@ export default function DocumentsScreen({ navigation }) {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.btn}
-            onPress={() => {
-              if (userRedux.role != "lecteur") {
-                dispatch(documentModalRestOuvert());
-              } else {
-                alert("c'est chitos mon acces est bloqué");
-              }
-            }}
+            onPress={ouvrirModalAjoutDocument}
           >
             <Text>Ajoute un document</Text>
           </TouchableOpacity>
         </View>
+        <ScrollView>{cardArr}</ScrollView>
       </View>
     </TemplateView>
   );
