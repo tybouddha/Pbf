@@ -1,4 +1,5 @@
-import { Modal, View, Text, ScrollView, TouchableOpacity } from "react-native";
+import { Modal, View, Text, ScrollView } from "react-native";
+import CustomButton from "../shared/CustomButton";
 import styles from "../../styles/modalStyles/AccueilStyles";
 
 const AgendaModal = ({ visible, onClose, selectedDate, appointments }) => (
@@ -20,9 +21,7 @@ const AgendaModal = ({ visible, onClose, selectedDate, appointments }) => (
             </View>
           ))}
         </ScrollView>
-        <TouchableOpacity style={styles.btnModal} onPress={onClose}>
-          <Text style={styles.textButton}>Fermer</Text>
-        </TouchableOpacity>
+        <CustomButton title="Fermer" onPress={onClose}></CustomButton>
       </View>
     </View>
   </Modal>

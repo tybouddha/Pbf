@@ -1,11 +1,6 @@
-import {
-  Modal,
-  View,
-  TextInput,
-  Switch,
-  TouchableOpacity,
-  Text,
-} from "react-native";
+import { Modal, View, Switch, Text } from "react-native";
+import CustomButton from "../shared/CustomButton";
+import CustomTextInput from "../shared/CustomTextInput";
 import styles from "../../styles/modalStyles/AccueilStyles";
 
 const InviteModal = ({ visible, onClose, role, setRole, link, onGenerate }) => {
@@ -16,7 +11,7 @@ const InviteModal = ({ visible, onClose, role, setRole, link, onGenerate }) => {
     <Modal visible={visible} animationType="fade" transparent>
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          <TextInput
+          <CustomTextInput
             placeholder="Lien d'invitation"
             value={link}
             style={styles.input}
@@ -31,12 +26,11 @@ const InviteModal = ({ visible, onClose, role, setRole, link, onGenerate }) => {
               value={role === "lecteur"}
             />
           </View>
-          <TouchableOpacity style={styles.btnModal} onPress={onGenerate}>
-            <Text style={styles.textButton}>Générer le code</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.btnModal} onPress={onClose}>
-            <Text style={styles.textButton}>Fermer</Text>
-          </TouchableOpacity>
+          <CustomButton
+            title="Générer le code"
+            onPress={onGenerate}
+          ></CustomButton>
+          <CustomButton title="Fermer" onPress={onClose}></CustomButton>
         </View>
       </View>
     </Modal>

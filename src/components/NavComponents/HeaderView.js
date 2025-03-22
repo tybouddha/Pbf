@@ -1,6 +1,7 @@
 import { View, Image, TouchableOpacity } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome5";
 import { useSelector, useDispatch } from "react-redux";
+import CustomButton from "../shared/CustomButton";
 import styles from "../../styles/NavComponentsStyles/HeaderViewStyles";
 
 export default function HeaderView(props) {
@@ -23,21 +24,21 @@ export default function HeaderView(props) {
           : styles.containerProfilSolo
       }
     >
-      <TouchableOpacity style={styles.btn} onPress={() => pressedProfil()}>
+      <CustomButton onPress={() => pressedProfil()}>
         <FontAwesome name={"user-ninja"} size={25} color={"#FFFFFF"} />
-      </TouchableOpacity>
+      </CustomButton>
     </View>
   );
 
   const vwArrière = (
     <View style={styles.containerArrière}>
-      <TouchableOpacity style={styles.btn} onPress={() => allerArrière()}>
+      <CustomButton onPress={() => allerArrière()}>
         <FontAwesome
           name={"arrow-alt-circle-left"}
           size={25}
           color={"#FFFFFF"}
         />
-      </TouchableOpacity>
+      </CustomButton>
     </View>
   );
 

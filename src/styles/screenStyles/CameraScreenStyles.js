@@ -13,14 +13,14 @@ export default StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
   },
-  button: {
-    width: 44,
-    height: 44,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.2)",
-    borderRadius: 50,
-  },
+  // button: {
+  //   width: 44,
+  //   height: 44,
+  //   alignItems: "center",
+  //   justifyContent: "center",
+  //   backgroundColor: "rgba(0, 0, 0, 0.2)",
+  //   borderRadius: 50,
+  // },
   snapContainer: {
     flex: 1,
     alignItems: "center",

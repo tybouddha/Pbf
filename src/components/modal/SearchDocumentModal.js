@@ -1,13 +1,8 @@
 import React from "react";
-import {
-  Modal,
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  ScrollView,
-} from "react-native";
+import { Modal, View, Text, ScrollView } from "react-native";
 import { useDocumentLogic } from "../../hooks/useDocumentLogic";
+import CustomButton from "../shared/CustomButton";
+import CustomTextInput from "../shared/CustomTextInput";
 import styles from "../../styles/modalStyles/SearchDocumentModalStyles";
 
 export default function SearchModal({
@@ -24,8 +19,7 @@ export default function SearchModal({
       <View style={styles.centeredView}>
         <View style={styles.modalListView}>
           <Text style={styles.modalTitle}>Rechercher</Text>
-          <TextInput
-            style={styles.listItem}
+          <CustomTextInput
             placeholder="Rechercher vos documents"
             value={searchInput}
             onChangeText={setSearchInput}
@@ -36,15 +30,15 @@ export default function SearchModal({
             </ScrollView>
           )}
           <View style={styles.vwRechercheButons}>
-            <TouchableOpacity onPress={searchDocuments} style={styles.btnModal}>
-              <Text style={styles.textButton}>Rechercher</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
+            <CustomButton
+              title="Rechercher"
+              onPress={searchDocuments}
+            ></CustomButton>
+            <CustomButton
+              title="Fermer"
               onPress={fermerSearchModal}
               style={styles.btnModal}
-            >
-              <Text style={styles.textButton}>Fermer</Text>
-            </TouchableOpacity>
+            ></CustomButton>
           </View>
         </View>
       </View>

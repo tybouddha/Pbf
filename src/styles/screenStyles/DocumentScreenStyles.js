@@ -31,16 +31,16 @@ export default StyleSheet.create({
     height: Dimensions.get("screen").height * 0.5,
     justifyContent: "space-around",
   },
-  btn: {
-    display: "flex",
-    backgroundColor: "white",
-    width: 300,
-    height: 50,
-    alignItems: "center",
-    borderRadius: 12,
-    justifyContent: "center",
-    margin: 5,
-  },
+  // btn: {
+  //   display: "flex",
+  //   backgroundColor: "white",
+  //   width: 300,
+  //   height: 50,
+  //   alignItems: "center",
+  //   borderRadius: 12,
+  //   justifyContent: "center",
+  //   margin: 5,
+  // },
   // modalTitle: {
   //   fontSize: 20,
   // },
@@ -87,11 +87,11 @@ export default StyleSheet.create({
   scrollView: {
     width: "100%",
   },
-  textButton: {
-    color: "#ffffff",
-    fontWeight: "600",
-    fontSize: 15,
-  },
+  // textButton: {
+  //   color: "#ffffff",
+  //   fontWeight: "600",
+  //   fontSize: 15,
+  // },
   vwRechercheButons: {
     width: "100%",
     justifyContent: "center",

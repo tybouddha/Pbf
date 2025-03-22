@@ -19,10 +19,10 @@ export default StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  btnModal: {
-    width: "100%",
-    marginBottom: 10,
-  },
+  // btnModal: {
+  //   width: "100%",
+  //   marginBottom: 10,
+  // },
   input: {
     borderWidth: 1,
     borderColor: "#ddd",
@@ -31,14 +31,14 @@ export default StyleSheet.create({
     marginVertical: 5,
     width: "100%",
   },
-  btnClose: {
-    backgroundColor: "#ddd",
-    padding: 10,
-    borderRadius: 5,
-    alignItems: "center",
-    marginVertical: 5,
-  },
-  textButton: {
-    fontSize: 16,
-  },
+  // btnClose: {
+  //   backgroundColor: "#ddd",
+  //   padding: 10,
+  //   borderRadius: 5,
+  //   alignItems: "center",
+  //   marginVertical: 5,
+  // },
+  // textButton: {
+  //   fontSize: 16,
+  // },
 });

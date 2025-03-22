@@ -1,7 +1,9 @@
 import React from "react";
-import { Modal, View, TouchableOpacity, TextInput, Text } from "react-native";
+import { Modal, View, Text } from "react-native";
 import DateTimePicker from "react-native-modal-datetime-picker";
-import styles from "../../styles/modalStyles/CarnetBebeModalStyles";
+import CustomButton from "../shared/CustomButton";
+import CustomTextInput from "../shared/CustomTextInput";
+import CarnetBebeModalStyles from "../../styles/modalStyles/CarnetBebeModalStyles"; // Ajuste le chemin si nécessaire
 
 export default function CarnetBebeModal({
   visible,
@@ -25,60 +27,46 @@ export default function CarnetBebeModal({
 }) {
   return (
     <Modal visible={visible} animationType="fade" transparent>
-      <View style={styles.centeredView}>
-        <View style={styles.modalView}>
-          <TouchableOpacity style={styles.btnModal} activeOpacity={0.8}>
-            <TextInput
-              placeholder="Date"
-              style={styles.input}
-              value={date}
-              onPressIn={() => showDatePicker("date")}
-            />
-            <TextInput
-              placeholder="Coucher"
-              style={styles.input}
-              value={coucher}
-              onChangeText={setCoucher}
-            />
-            <TextInput
-              placeholder="Selle"
-              style={styles.input}
-              value={selle}
-              onChangeText={setSelle}
-            />
-            <TextInput
-              placeholder="Couleur selle"
-              style={styles.input}
-              value={couleur}
-              onChangeText={setCouleur}
-            />
-            <TextInput
-              placeholder="Repas"
-              style={styles.input}
-              value={repas}
-              onChangeText={setRepas}
-            />
-            <TextInput
-              placeholder="Note"
-              style={styles.input}
-              value={note}
-              onChangeText={setNote}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={onSave}
-            style={styles.btnClose}
-            activeOpacity={0.8}
-          >
-            <Text style={styles.textButton}>Enregistré modification</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={onClose}
-            style={styles.btnClose}
-            activeOpacity={0.8}
-          >
-            <Text style={styles.textButton}>Close</Text>
-          </TouchableOpacity>
+      <View style={CarnetBebeModalStyles.centeredView}>
+        <View style={CarnetBebeModalStyles.modalView}>
+          {/* Champs de saisie */}
+          <CustomTextInput
+            placeholder="Date"
+            value={date}
+            onPressIn={() => showDatePicker("date")}
+            editable={false} // Désactive la saisie manuelle pour la date
+          />
+          <CustomTextInput
+            placeholder="Coucher"
+            value={coucher}
+            onChangeText={setCoucher}
+          />
+          <CustomTextInput
+            placeholder="Selle"
+            value={selle}
+            onChangeText={setSelle}
+          />
+          <CustomTextInput
+            placeholder="Couleur selle"
+            value={couleur}
+            onChangeText={setCouleur}
+          />
+          <CustomTextInput
+            placeholder="Repas"
+            value={repas}
+            onChangeText={setRepas}
+          />
+          <CustomTextInput
+            placeholder="Note"
+            value={note}
+            onChangeText={setNote}
+          />
+
+          {/* Boutons */}
+          <CustomButton title="Enregistré modification" onPress={onSave} />
+          <CustomButton title="Close" onPress={onClose} />
+
+          {/* Date Picker */}
           <DateTimePicker
             isVisible={isDatePickerVisible}
             mode="date"

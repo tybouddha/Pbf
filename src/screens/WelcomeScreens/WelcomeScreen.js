@@ -1,8 +1,8 @@
 import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
-import TemplateViewNoNav from "../../components/Template/TemplateViewNoNav";
-import CustomButton from "../../components/shared/CustomButton"; // Réutilisation
+import { View } from "react-native";
 import { useWelcomeNavigation } from "../../hooks/useWelcomeNavigation";
+import CustomButton from "../../components/shared/CustomButton"; // Réutilisation
+import TemplateViewNoNav from "../../components/Template/TemplateViewNoNav";
 import styles from "../../styles/screenStyles/WelcomeScreenStyles";
 
 export default function WelcomeScreen({ navigation }) {

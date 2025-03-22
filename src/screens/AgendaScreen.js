@@ -9,14 +9,13 @@ import {
   Platform,
 } from "react-native";
 import { Calendar } from "react-native-calendars";
-import TemplateView from "../components/Template/TemplateView";
+import { useAgendaLogic } from "../hooks/useAgendaLogic";
 import CustomButton from "../components/shared/CustomButton";
+import TemplateView from "../components/Template/TemplateView";
 import AddRendezVousModal from "../components/modal/AddRendezVousModal";
 import SearchRendezVousModal from "../components/modal/SearchRendezVousModal";
 import ModifyRendezVousModal from "../components/modal/ModifyRendezVousModal";
 import RendezVousModal from "../components/modal/RendezVousModal";
-// import NutritionGuideModal from '../components/modal/NutritionGuideModal';
-import { useAgendaLogic } from "../hooks/useAgendaLogic";
 import styles from "../styles/screenStyles/AgendaScreenStyles";
 
 const mamanRendezVousList = [

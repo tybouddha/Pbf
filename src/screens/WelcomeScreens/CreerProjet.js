@@ -1,13 +1,13 @@
 import React from "react";
 import { View, ScrollView, Text, Switch, Modal } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../../../reducers/user";
-import TemplateViewNoNav from "../../components/Template/TemplateViewNoNav";
-import VwEchec from "../../components/Template/VwEchec";
+// import { useDispatch, useSelector } from "react-redux";
+// import { loginUser } from "../../../reducers/user";
 import DateTimePicker from "react-native-modal-datetime-picker";
+import { useSignupForm } from "../../hooks/useSingUpForm"; // Hook extrait dans un fichier séparé
 import CustomTextInput from "../../components/shared/CustomTextInput";
 import CustomButton from "../../components/shared/CustomButton";
-import { useSignupForm } from "../../hooks/useSingUpForm"; // Hook extrait dans un fichier séparé
+import TemplateViewNoNav from "../../components/Template/TemplateViewNoNav";
+import VwEchec from "../../components/Template/VwEchec";
 import styles from "../../styles/screenStyles/CreerProjetStyles";
 
 export default function CreerProjetScreen({ navigation }) {

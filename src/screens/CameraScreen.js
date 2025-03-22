@@ -3,6 +3,7 @@ import { View, TouchableOpacity } from "react-native";
 import { Camera } from "expo-camera";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useCameraLogic } from "../hooks/useCameraLogic";
+import CustomButton from "../components/shared/CustomButton";
 import StockerImageModal from "../components/modal/StockerImageModal";
 import styles from "../styles/screenStyles/CameraScreenStyles";
 
@@ -39,38 +40,37 @@ export default function CameraScreen({ navigation }) {
         photoCacheUri={photoCacheUri}
       />
       <View style={styles.buttonsContainer}>
-        <TouchableOpacity
+        <CustomButton
           onPress={() =>
             navigation.navigate("TabNavigator", { screen: "Documents" })
           }
-          style={styles.button}
+          // style={styles.button}
         >
           <FontAwesome name="arrow-left" size={25} color="#ffffff" />
-        </TouchableOpacity>
+        </CustomButton>
 
-        <TouchableOpacity
+        <CustomButton
           onPress={() => setType(type === "back" ? "front" : "back")}
-          style={styles.button}
+          // style={styles.button}
         >
           <FontAwesome name="rotate-right" size={25} color="#ffffff" />
-        </TouchableOpacity>
+        </CustomButton>
 
-        <TouchableOpacity
+        <CustomButton
           onPress={() => setFlashMode(flashMode === "off" ? "torch" : "off")}
-          style={styles.button}
         >
           <FontAwesome
             name="flash"
             size={25}
             color={flashMode === "off" ? "#ffffff" : "#e8be4b"}
           />
-        </TouchableOpacity>
+        </CustomButton>
       </View>
 
       <View style={styles.snapContainer}>
-        <TouchableOpacity onPress={takePicture}>
+        <CustomButton onPress={takePicture}>
           <FontAwesome name="circle-thin" size={95} color="#ffffff" />
-        </TouchableOpacity>
+        </CustomButton>
       </View>
     </Camera>
   );

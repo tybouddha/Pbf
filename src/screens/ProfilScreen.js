@@ -1,11 +1,11 @@
 import React from "react";
 import { View, Text, KeyboardAvoidingView, Platform } from "react-native";
-import TemplateView from "../components/Template/TemplateView";
+import { useProfilLogic } from "../hooks/useProfilLogic";
 import CustomButton from "../components/shared/CustomButton";
 import CustomTextInput from "../components/shared/CustomTextInput";
+import TemplateView from "../components/Template/TemplateView";
 import PasswordModal from "../components/modal/PasswordModal";
 import DateTimePicker from "react-native-modal-datetime-picker";
-import { useProfilLogic } from "../hooks/useProfilLogic";
 import styles from "../styles/screenStyles/ProfilScreenStyles";
 
 export default function ProfilScreen({ navigation }) {

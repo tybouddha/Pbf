@@ -1,12 +1,12 @@
 import React from "react";
 import { View, Text, Switch, Modal } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../../../reducers/user";
-import TemplateViewNoNav from "../../components/Template/TemplateViewNoNav";
-import VwEchec from "../../components/Template/VwEchec";
+// import { useDispatch, useSelector } from "react-redux";
+// import { loginUser } from "../../../reducers/user";
+import { useInviteForm } from "../../hooks/useInviteForm";
 import CustomTextInput from "../../components/shared/CustomTextInput";
 import CustomButton from "../../components/shared/CustomButton";
-import { useInviteForm } from "../../hooks/useInviteForm";
+import TemplateViewNoNav from "../../components/Template/TemplateViewNoNav";
+import VwEchec from "../../components/Template/VwEchec";
 import styles from "../../styles/screenStyles/InviterScreenStyles";
 
 export default function InviterScreen({ navigation }) {

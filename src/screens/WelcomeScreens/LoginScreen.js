@@ -1,10 +1,10 @@
 import React from "react";
 import { View, Text, Switch, Modal } from "react-native";
-import TemplateViewNoNav from "../../components/Template/TemplateViewNoNav";
-import VwEchec from "../../components/Template/VwEchec";
+import { useLoginForm } from "../../hooks/useLoginForm";
 import CustomTextInput from "../../components/shared/CustomTextInput";
 import CustomButton from "../../components/shared/CustomButton";
-import { useLoginForm } from "../../hooks/useLoginForm";
+import TemplateViewNoNav from "../../components/Template/TemplateViewNoNav";
+import VwEchec from "../../components/Template/VwEchec";
 import styles from "../../styles/screenStyles/LoginScreenStyles";
 
 export default function LoginScreen({ navigation }) {

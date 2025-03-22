@@ -37,15 +37,15 @@ export default StyleSheet.create({
     width: "100%",
     marginTop: 10,
   },
-  btnModal: {
-    backgroundColor: "#ddd",
-    padding: 10,
-    borderRadius: 5,
-    alignItems: "center",
-    flex: 1,
-    marginHorizontal: 5,
-  },
-  textButton: {
-    fontSize: 16,
-  },
+  // btnModal: {
+  //   backgroundColor: "#ddd",
+  //   padding: 10,
+  //   borderRadius: 5,
+  //   alignItems: "center",
+  //   flex: 1,
+  //   marginHorizontal: 5,
+  // },
+  // textButton: {
+  //   fontSize: 16,
+  // },
 });

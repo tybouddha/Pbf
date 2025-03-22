@@ -43,18 +43,19 @@ export const useAccueilLogic = (user, appointments) => {
   return {
     selectedDate,
     agendaModalVisible,
+    inviteModalVisible,
+    mamanModalVisible,
+    babyModalVisible,
     rendezVousDuJour,
     handleDayPress,
-    inviteModalVisible,
     inviteRole,
     inviteLink,
     handleInviteSubmit,
     generateInviteCode,
+    setAgendaModalVisible,
     setInviteModalVisible,
     setInviteRole,
     setMamanModalVisible,
     setBabyModalVisible,
-    mamanModalVisible,
-    babyModalVisible,
   };
 };

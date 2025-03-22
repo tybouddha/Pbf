@@ -8,13 +8,13 @@ import {
   View,
 } from "react-native";
 import { Calendar } from "react-native-calendars";
+import { useAppointments } from "../hooks/useAppointments";
+import { useAccueilLogic } from "../hooks/useAcceuilLogic";
 import HeaderView from "../components/NavComponents/HeaderView";
+import CustomButton from "../components/shared/CustomButton"; // Réutilisation
 import InviteModal from "../components/modal/InviteModal";
 import AgendaModal from "../components/modal/AgendaModal";
 import NutritionGuideModal from "../components/modal/NutritionGuideModal";
-import CustomButton from "../components/shared/CustomButton"; // Réutilisation
-import { useAppointments } from "../hooks/useAppointments";
-import { useAccueilLogic } from "../hooks/useAcceuilLogic";
 import styles from "../styles/modalStyles/AccueilStyles";
 
 const guideNutritionMaman = [
@@ -43,6 +43,7 @@ export default function AccueilScreen({ navigation }) {
   const {
     selectedDate,
     agendaModalVisible,
+    setAgendaModalVisible,
     rendezVousDuJour,
     handleDayPress,
     inviteModalVisible,

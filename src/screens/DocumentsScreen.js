@@ -1,10 +1,11 @@
 import React from "react";
 import { View, Text, TouchableOpacity, Image, ScrollView } from "react-native";
+import { useDocumentLogic } from "../hooks/useDocumentLogic";
+import CustomButton from "../components/shared/CustomButton";
 import TemplateView from "../components/Template/TemplateView";
 import VwAjouterDocument from "../components/Template/VwAjouterDocument";
 import SearchModal from "../components/modal/SearchDocumentModal";
 import PhotoModal from "../components/modal/PhotoModal";
-import { useDocumentLogic } from "../hooks/useDocumentLogic";
 import styles from "../styles/screenStyles/DocumentScreenStyles";
 
 export default function DocumentsScreen({ navigation }) {
@@ -45,21 +46,16 @@ export default function DocumentsScreen({ navigation }) {
       <Text style={styles.txtNotes}>{elem.notes}</Text>
       <View style={styles.vwInputPhotos}>
         <View style={styles.photoContainer}>
-          <TouchableOpacity
-            style={{ flex: 1 }}
-            onPress={() => appuyerPhoto(elem)}
-          >
+          <CustomButton onPress={() => appuyerPhoto(elem)}>
             <Image source={{ uri: elem.url[0] }} style={styles.imgElemStyle} />
-          </TouchableOpacity>
+          </CustomButton>
         </View>
       </View>
       <View style={styles.vwButonSupprimer}>
-        <TouchableOpacity
-          style={styles.btnModal}
+        <CustomButton
+          title="Supprimer"
           onPress={() => poubelleAppuyee(elem)}
-        >
-          <Text style={{ color: "white" }}>Supprimer</Text>
-        </TouchableOpacity>
+        ></CustomButton>
       </View>
     </View>
   );
@@ -92,18 +88,14 @@ export default function DocumentsScreen({ navigation }) {
       />
       <View style={styles.container}>
         <View style={styles.vwHaut}>
-          <TouchableOpacity
-            style={styles.btn}
+          <CustomButton
+            title="Rechercher un Document"
             onPress={() => setSearchModalVisible(true)}
-          >
-            <Text>Rechercher un document</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.btn}
+          ></CustomButton>
+          <CustomButton
+            title="Ajoute un document"
             onPress={ouvrirModalAjoutDocument}
-          >
-            <Text>Ajoute un document</Text>
-          </TouchableOpacity>
+          ></CustomButton>
         </View>
         <ScrollView>{cardArr}</ScrollView>
       </View>

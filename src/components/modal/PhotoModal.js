@@ -1,12 +1,6 @@
 import React from "react";
-import {
-  Modal,
-  View,
-  Image,
-  TouchableOpacity,
-  Text,
-  Dimensions,
-} from "react-native";
+import { Modal, View, Image, Dimensions } from "react-native";
+import CustomButton from "../shared/CustomButton";
 import styles from "../../styles/modalStyles/PhotoModalStyles";
 
 export default function PhotoModal({ visible, documentChoisi, onClose }) {
@@ -22,9 +16,7 @@ export default function PhotoModal({ visible, documentChoisi, onClose }) {
             }}
           />
         )}
-        <TouchableOpacity onPress={onClose} style={styles.btnModal}>
-          <Text style={styles.textButton}>Fermer</Text>
-        </TouchableOpacity>
+        <CustomButton title="Fermer" onPress={onClose}></CustomButton>
       </View>
     </Modal>
   );

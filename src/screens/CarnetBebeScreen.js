@@ -1,8 +1,9 @@
 import React from "react";
 import { View, TouchableOpacity, Text } from "react-native";
+import { useCarnetBebeLogic } from "../hooks/useCarnetBebeLogic";
+import CustomButton from "../components/shared/CustomButton";
 import TemplateView from "../components/Template/TemplateView";
 import CarnetBebeModal from "../components/modal/CarnetBebeModal";
-import { useCarnetBebeLogic } from "../hooks/useCarnetBebeLogic";
 import styles from "../styles/screenStyles/CarnetBebeScreenStyles";
 
 export default function CarnetBebeScreen({ navigation }) {
@@ -38,12 +39,9 @@ export default function CarnetBebeScreen({ navigation }) {
       <Text>Selle: {item.selle}</Text>
       <Text>Couleur Selle: {item.couleurSelle}</Text>
       <Text>Notes: {item.notes}</Text>
-      <TouchableOpacity
-        style={styles.btnModal2}
-        onPress={() => handleDelete(item._id)}
-      >
+      <CustomButton onPress={() => handleDelete(item._id)}>
         <Text>Supprimer</Text>
-      </TouchableOpacity>
+      </CustomButton>
     </View>
   ));
 
@@ -53,9 +51,10 @@ export default function CarnetBebeScreen({ navigation }) {
         <View style={styles.vwInstructions}>
           <Text style={styles.txtInstructions}>Carnet Bébé</Text>
         </View>
-        <TouchableOpacity style={styles.btn} onPress={modalCarnetBebe}>
-          <Text>Ajoute un document carnet Bebe</Text>
-        </TouchableOpacity>
+        <CustomButton
+          onPress={modalCarnetBebe}
+          title="Ajoute un document carnet Bebe"
+        ></CustomButton>
 
         <CarnetBebeModal
           visible={modalVisible}
