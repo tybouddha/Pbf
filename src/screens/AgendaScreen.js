@@ -15,6 +15,7 @@ import AddRendezVousModal from "../components/modal/AddRendezVousModal";
 import SearchRendezVousModal from "../components/modal/SearchRendezVousModal";
 import ModifyRendezVousModal from "../components/modal/ModifyRendezVousModal";
 import RendezVousModal from "../components/modal/RendezVousModal";
+// import NutritionGuideModal from '../components/modal/NutritionGuideModal';
 import { useAgendaLogic } from "../hooks/useAgendaLogic";
 import styles from "../styles/screenStyles/AgendaScreenStyles";
 

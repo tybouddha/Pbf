@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, View, TouchableOpacity, TextInput } from "react-native";
+import { Modal, View, TouchableOpacity, TextInput, Text } from "react-native";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import styles from "../../styles/modalStyles/CarnetBebeModalStyles";
 

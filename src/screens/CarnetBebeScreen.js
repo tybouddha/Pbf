@@ -1,5 +1,5 @@
 import React from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, Text } from "react-native";
 import TemplateView from "../components/Template/TemplateView";
 import CarnetBebeModal from "../components/modal/CarnetBebeModal";
 import { useCarnetBebeLogic } from "../hooks/useCarnetBebeLogic";

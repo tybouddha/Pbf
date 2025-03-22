@@ -1,7 +1,5 @@
 import React from "react";
 import { View, Text, Switch, Modal } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../../../reducers/user";
 import TemplateViewNoNav from "../../components/Template/TemplateViewNoNav";
 import VwEchec from "../../components/Template/VwEchec";
 import CustomTextInput from "../../components/shared/CustomTextInput";

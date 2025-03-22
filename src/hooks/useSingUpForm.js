@@ -48,6 +48,7 @@ export const useSignupForm = (navigation) => {
     setIsSubmitting(true);
 
     try {
+      console.log(`${process.env.EXPO_PUBLIC_API_URL}`);
       const response = await fetch(
         `${process.env.EXPO_PUBLIC_API_URL}/user/signupProject`,
         {
