@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useSelector } from "react-redux";
 import {
   ImageBackground,
@@ -6,15 +5,15 @@ import {
   Platform,
   Text,
   View,
+  Switch,
 } from "react-native";
 import { Calendar } from "react-native-calendars";
 import { useAppointments } from "../hooks/useAppointments";
-import { useAccueilLogic } from "../hooks/useAcceuilLogic";
+import { useAccueilLogic } from "../hooks/useAccueilLogic"; // Import corrigé
 import HeaderView from "../components/NavComponents/HeaderView";
-import CustomButton from "../components/shared/CustomButton"; // Réutilisation
-import InviteModal from "../components/modal/InviteModal";
-import AgendaModal from "../components/modal/AgendaModal";
-import NutritionGuideModal from "../components/modal/NutritionGuideModal";
+import CustomButton from "../components/shared/CustomButton";
+import FormModal from "../components/shared/FormModal";
+import GuideModal from "../components/shared/GuideModal";
 import styles from "../styles/modalStyles/AccueilStyles";
 
 const guideNutritionMaman = [
@@ -39,6 +38,7 @@ export default function AccueilScreen({ navigation }) {
   const user = useSelector((state) => state.user.value);
   const { username } = user;
   const { rendezVous, markedDates } = useAppointments(user.tokenProject);
+  console.log("Rendez-vous depuis useAppointments :", rendezVous);
 
   const {
     selectedDate,
@@ -46,13 +46,14 @@ export default function AccueilScreen({ navigation }) {
     setAgendaModalVisible,
     rendezVousDuJour,
     handleDayPress,
+    toggleSwitch,
     inviteModalVisible,
+    setInviteModalVisible,
     inviteRole,
+    setInviteRole,
     inviteLink,
     handleInviteSubmit,
     generateInviteCode,
-    setInviteModalVisible,
-    setInviteRole,
     setMamanModalVisible,
     setBabyModalVisible,
     mamanModalVisible,
@@ -80,13 +81,31 @@ export default function AccueilScreen({ navigation }) {
           />
         </View>
 
-        <InviteModal
+        <FormModal
           visible={inviteModalVisible}
           onClose={() => setInviteModalVisible(false)}
-          role={inviteRole}
-          setRole={setInviteRole}
-          link={inviteLink}
-          onGenerate={generateInviteCode}
+          title="Inviter un proche"
+          formContent={
+            <View style={styles.switchContainer}>
+              <Text>Assigner un rôle ({inviteRole})</Text>
+              <Switch
+                thumbColor={inviteRole === "lecteur" ? "#f5dd4b" : "#f4f3f4"}
+                ios_backgroundColor="black"
+                onValueChange={toggleSwitch}
+                value={inviteRole === "lecteur"}
+              />
+              <Text>Lien : {inviteLink || "Non généré"}</Text>
+            </View>
+          }
+          actions={
+            <>
+              <CustomButton title="Générer" onPress={generateInviteCode} />
+              <CustomButton
+                title="Fermer"
+                onPress={() => setInviteModalVisible(false)}
+              />
+            </>
+          }
         />
 
         <View>
@@ -100,11 +119,32 @@ export default function AccueilScreen({ navigation }) {
           />
         </View>
 
-        <AgendaModal
+        <FormModal
           visible={agendaModalVisible}
           onClose={() => setAgendaModalVisible(false)}
-          selectedDate={selectedDate}
-          appointments={rendezVousDuJour}
+          title={`Agenda - ${selectedDate || "Non sélectionné"}`}
+          formContent={
+            <Text>
+              {rendezVousDuJour.length
+                ? rendezVousDuJour
+                    .map(
+                      (rdv) =>
+                        `${rdv.pourQui} - ${rdv.heure} - ${rdv.lieu} (${
+                          rdv.practicien
+                        })${rdv.notes ? " - " + rdv.notes : ""}`
+                    )
+                    .join("\n")
+                : "Aucun RDV"}
+            </Text>
+          }
+          actions={
+            <>
+              <CustomButton
+                title="Fermer"
+                onPress={() => setAgendaModalVisible(false)}
+              />
+            </>
+          }
         />
 
         <View style={styles.viewGuide}>
@@ -118,17 +158,17 @@ export default function AccueilScreen({ navigation }) {
           />
         </View>
 
-        <NutritionGuideModal
+        <GuideModal
           visible={babyModalVisible}
           onClose={() => setBabyModalVisible(false)}
           title="Conseil nutrition bébé"
-          content={guideNutritionBebe}
+          content={<Text>{guideNutritionBebe.join("\n")}</Text>}
         />
-        <NutritionGuideModal
+        <GuideModal
           visible={mamanModalVisible}
           onClose={() => setMamanModalVisible(false)}
           title="Conseil nutrition maman"
-          content={guideNutritionMaman}
+          content={<Text>{guideNutritionMaman.join("\n")}</Text>}
         />
       </KeyboardAvoidingView>
     </ImageBackground>

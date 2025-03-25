@@ -1,13 +1,14 @@
 import React from "react";
-import { View, ScrollView, Text, Switch, Modal } from "react-native";
+import { View, ScrollView, Text, Switch } from "react-native";
 // import { useDispatch, useSelector } from "react-redux";
 // import { loginUser } from "../../../reducers/user";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { useSignupForm } from "../../hooks/useSingUpForm"; // Hook extrait dans un fichier séparé
+import GuideModal from "../../components/shared/GuideModal";
 import CustomTextInput from "../../components/shared/CustomTextInput";
 import CustomButton from "../../components/shared/CustomButton";
 import TemplateViewNoNav from "../../components/Template/TemplateViewNoNav";
-import VwEchec from "../../components/Template/VwEchec";
+// import VwEchec from "../../components/Template/VwEchec";
 import styles from "../../styles/screenStyles/CreerProjetStyles";
 
 export default function CreerProjetScreen({ navigation }) {
@@ -30,12 +31,12 @@ export default function CreerProjetScreen({ navigation }) {
   return (
     <TemplateViewNoNav navigation={navigation} afficherArriére={true}>
       <View style={styles.container}>
-        <Modal visible={modalEchecVisible} animationType="fade" transparent>
-          <VwEchec
-            closeModal={() => setModalEchecVisible(false)}
-            messageError={messageError}
-          />
-        </Modal>
+        <GuideModal
+          visible={modalEchecVisible}
+          onClose={() => setModalEchecVisible(false)}
+          title="Erreur"
+          content={<Text>{messageError}</Text>}
+        />
         <ScrollView style={styles.scrollView}>
           <View style={styles.contentView}>
             <Text style={styles.txtInstructions}>Créez votre compte</Text>

@@ -1,3 +1,4 @@
+// hooks/useAccueilLogic.js
 import { useState, useCallback } from "react";
 
 export const useAccueilLogic = (user, appointments) => {
@@ -9,7 +10,7 @@ export const useAccueilLogic = (user, appointments) => {
   const [mamanModalVisible, setMamanModalVisible] = useState(false);
   const [babyModalVisible, setBabyModalVisible] = useState(false);
   const [inviteModalVisible, setInviteModalVisible] = useState(false);
-  const [inviteRole, setInviteRole] = useState("lecteur");
+  const [inviteRole, setInviteRole] = useState("lecteur"); // Rôle de l'invité
   const [inviteLink, setInviteLink] = useState("");
 
   const handleDayPress = useCallback(
@@ -27,6 +28,9 @@ export const useAccueilLogic = (user, appointments) => {
     [appointments]
   );
 
+  const toggleSwitch = () =>
+    setInviteRole((prev) => (prev === "lecteur" ? "editeur" : "lecteur"));
+
   const handleInviteSubmit = useCallback(() => {
     if (userRole !== "propriétaire") {
       alert("Accès bloqué : réservé au propriétaire");
@@ -36,7 +40,7 @@ export const useAccueilLogic = (user, appointments) => {
   }, [userRole]);
 
   const generateInviteCode = useCallback(() => {
-    const link = `${tokenProject}/${inviteRole}`;
+    const link = `${tokenProject}/${inviteRole}`; // Utilise inviteRole
     setInviteLink(link);
   }, [tokenProject, inviteRole]);
 
@@ -48,13 +52,14 @@ export const useAccueilLogic = (user, appointments) => {
     babyModalVisible,
     rendezVousDuJour,
     handleDayPress,
-    inviteRole,
-    inviteLink,
     handleInviteSubmit,
     generateInviteCode,
+    toggleSwitch,
+    inviteLink,
+    inviteRole, // Retourné
+    setInviteRole, // Retourné
     setAgendaModalVisible,
     setInviteModalVisible,
-    setInviteRole,
     setMamanModalVisible,
     setBabyModalVisible,
   };

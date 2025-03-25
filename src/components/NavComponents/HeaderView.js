@@ -33,11 +33,7 @@ export default function HeaderView(props) {
   const vwArrière = (
     <View style={styles.containerArrière}>
       <CustomButton onPress={() => allerArrière()}>
-        <FontAwesome
-          name={"arrow-alt-circle-left"}
-          size={25}
-          color={"#FFFFFF"}
-        />
+        <FontAwesome name={"arrow-left"} size={50} color={"#000"} />
       </CustomButton>
     </View>
   );
