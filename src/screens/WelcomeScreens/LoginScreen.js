@@ -1,10 +1,10 @@
 import React from "react";
-import { View, Text, Switch, Modal } from "react-native";
+import { View, Text, Switch } from "react-native";
 import { useLoginForm } from "../../hooks/useLoginForm";
+import GuideModal from "../../components/shared/GuideModal";
 import CustomTextInput from "../../components/shared/CustomTextInput";
 import CustomButton from "../../components/shared/CustomButton";
 import TemplateViewNoNav from "../../components/Template/TemplateViewNoNav";
-import VwEchec from "../../components/Template/VwEchec";
 import styles from "../../styles/screenStyles/LoginScreenStyles";
 
 export default function LoginScreen({ navigation }) {
@@ -23,12 +23,12 @@ export default function LoginScreen({ navigation }) {
   return (
     <TemplateViewNoNav navigation={navigation} afficherArriére={true}>
       <View style={styles.container}>
-        <Modal visible={modalEchecVisible} animationType="fade" transparent>
-          <VwEchec
-            closeModal={() => setModalEchecVisible(false)}
-            messageError={messageError}
-          />
-        </Modal>
+        <GuideModal
+          visible={modalEchecVisible}
+          onClose={() => setModalEchecVisible(false)}
+          title="Erreur"
+          content={<Text>{messageError}</Text>}
+        />
         <View style={styles.vwInstructions}>
           <Text style={styles.txtInstructions}>Connexion</Text>
         </View>
