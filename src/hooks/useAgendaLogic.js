@@ -1,7 +1,9 @@
 import { useEffect, useState, useCallback } from "react";
+import { useCloseModalGeneric } from "../utils/useCloseModalGeneric";
 
 export const useAgendaLogic = (user, navigation) => {
   const projectToken = user.tokenProject;
+  const closeModalGeneric = useCloseModalGeneric();
 
   const [modalVisible, setModalVisible] = useState(false);
   const [mamanModalVisible, setMamanModalVisible] = useState(false);
@@ -27,7 +29,7 @@ export const useAgendaLogic = (user, navigation) => {
   const [rendezVousDuJour, setRendezVousDuJour] = useState([]);
   const [markedDates, setMarkedDates] = useState({});
   const [filteredRendezVous, setFilteredRendezVous] = useState({});
-  const [selectedRdvId, setSelectedRdvId] = useState(null); // Nouvel état pour l’ID du rendez-vous modifié
+  const [selectedRdvId, setSelectedRdvId] = useState(null);
 
   const openModal = useCallback(() => {
     if (user.role === "lecteur") {
@@ -37,32 +39,12 @@ export const useAgendaLogic = (user, navigation) => {
     }
   }, [user.role]);
 
-  const closeModal = useCallback(() => {
-    setModalVisible(false);
-    setPourQui("");
-    setPracticien("");
-    setLieu("");
-    setHeure("");
-    setNotes("");
-  }, []);
-
   const openMamanModal = () => setMamanModalVisible(true);
-  const closeMamanModal = () => setMamanModalVisible(false);
   const openBabyModal = () => setBabyModalVisible(true);
-  const closeBabyModal = () => setBabyModalVisible(false);
   const openAgendaModal = () => setAgendaModalVisible(true);
-  const closeAgendaModal = () => {
-    setAgendaModalVisible(false);
-    setRendezVousDuJour([]);
-  };
   const openSvModalVisible = () => setSvModalVisible(true);
-  const closeSvModalVisible = () => setSvModalVisible(false);
   const openSearchModal = () => setSearchModalVisible(true);
-  const closeSearchModal = () => {
-    setSearchModalVisible(false);
-    setFilteredRendezVous({});
-    setSearchInput("");
-  };
+
   const openModifierModal = useCallback(
     (rdvData) => {
       if (user.role === "lecteur") {
@@ -73,21 +55,12 @@ export const useAgendaLogic = (user, navigation) => {
         setLieuModif(rdvData.lieu);
         setHeureModif(rdvData.heure);
         setNotesModif(rdvData.notes);
-        setSelectedRdvId(rdvData._id); // Stocke l’ID du rendez-vous à modifier
+        setSelectedRdvId(rdvData._id);
         setModifierModalVisible(true);
       }
     },
     [user.role]
   );
-  const closeModifierModal = useCallback(() => {
-    setModifierModalVisible(false);
-    setPourQuiModif("");
-    setPracticienModif("");
-    setLieuModif("");
-    setHeureModif("");
-    setNotesModif("");
-    setSelectedRdvId(null); // Réinitialise l’ID
-  }, []);
 
   const fetchData = useCallback(() => {
     fetch(`${process.env.EXPO_PUBLIC_API_URL}/rdv/${projectToken}`)
@@ -160,7 +133,7 @@ export const useAgendaLogic = (user, navigation) => {
         }
       })
       .catch((error) => console.error("Erreur submit :", error));
-    closeModal();
+    closeModalGeneric(setModalVisible); // Correction ici
   }, [
     user.role,
     pourQui,
@@ -171,7 +144,7 @@ export const useAgendaLogic = (user, navigation) => {
     heure,
     projectToken,
     fetchData,
-    closeModal,
+    setModalVisible,
   ]);
 
   const handleSearch = useCallback(() => {
@@ -230,8 +203,10 @@ export const useAgendaLogic = (user, navigation) => {
       })
         .then((response) => response.json())
         .then((data) => {
-          if (data.result) fetchData();
-          closeModifierModal();
+          if (data.result) {
+            fetchData();
+            closeModalGeneric(setModifierModalVisible); // Correction ici
+          }
         })
         .catch((error) => console.error("Erreur update :", error));
     },
@@ -243,7 +218,7 @@ export const useAgendaLogic = (user, navigation) => {
       heureModif,
       projectToken,
       fetchData,
-      closeModifierModal,
+      setModifierModalVisible,
     ]
   );
 
@@ -285,21 +260,22 @@ export const useAgendaLogic = (user, navigation) => {
     rendezVousDuJour,
     markedDates,
     filteredRendezVous,
-    selectedRdvId, // Ajouté au retour
+    selectedRdvId,
+    setModalVisible,
+    setMamanModalVisible,
+    setBabyModalVisible,
+    setAgendaModalVisible,
+    setSearchModalVisible,
+    setModifierModalVisible,
+    setSvModalVisible,
     openModal,
-    closeModal,
     openMamanModal,
-    closeMamanModal,
     openBabyModal,
-    closeBabyModal,
     openAgendaModal,
-    closeAgendaModal,
-    openSvModalVisible,
-    closeSvModalVisible,
     openSearchModal,
-    closeSearchModal,
     openModifierModal,
-    closeModifierModal,
+    openSvModalVisible,
+    closeModalGeneric,
     handleDayPress,
     handleSubmit,
     handleSearch,

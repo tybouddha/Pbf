@@ -4,59 +4,25 @@ import {
   View,
   Text,
   KeyboardAvoidingView,
-  Modal,
-  ScrollView,
   Platform,
+  ScrollView,
 } from "react-native";
 import { Calendar } from "react-native-calendars";
 import { useAgendaLogic } from "../hooks/useAgendaLogic";
+import GuideModal from "../components/shared/GuideModal";
+import FormModal from "../components/shared/FormModal";
 import CustomButton from "../components/shared/CustomButton";
+import CustomTextInput from "../components/shared/CustomTextInput";
+import {
+  mamanRendezVousList,
+  babyRendezVousList,
+} from "../components/constants/RdvList";
 import TemplateView from "../components/Template/TemplateView";
-import AddRendezVousModal from "../components/modal/AddRendezVousModal";
-import SearchRendezVousModal from "../components/modal/SearchRendezVousModal";
-import ModifyRendezVousModal from "../components/modal/ModifyRendezVousModal";
-import RendezVousModal from "../components/modal/RendezVousModal";
 import styles from "../styles/screenStyles/AgendaScreenStyles";
-
-const mamanRendezVousList = [
-  "1er trimestre : Prendre rendez-vous avec un médecin généraliste, gynécologue ou sage-femme pour confirmer la grossesse.",
-  "Déclarer la grossesse à la Caf et à l'assurance maladie.",
-  "Planifier la 1ère échographie.",
-  "Bilan prénatal de prévention avec une sage-femme pour les habitudes de vie.",
-  "2ème trimestre : Planifier le 2ème examen prénatal.",
-  "Planifier l'entretien prénatal précoce avec sage-femme ou médecin.",
-  "3ème trimestre : Prévoir le rendez-vous avec l'anesthésiste.",
-  "Déclarer la naissance à l'état civil dans les 5 jours suivant l'accouchement.",
-  "Planifier les premiers examens de santé du bébé.",
-  "Consulter une sage-femme pour un suivi postnatal.",
-  "Prévoir la rééducation périnéale et abdominale.",
-];
-
-const babyRendezVousList = [
-  "Dans les 8 jours suivant la naissance",
-  "Au cours de la 2ème semaine",
-  "Avant la fin du 1er mois",
-  "1 mois",
-  "2 mois",
-  "3 mois",
-  "4 mois",
-  "5 mois",
-  "8 mois",
-  "11 mois",
-  "12 mois",
-  "Entre 16 et 18 mois",
-  "Entre 23 et 24 mois",
-  "2 ans",
-  "3 ans",
-  "4 ans",
-  "5 ans",
-  "Entre 8 et 9 ans",
-  "Entre 11 et 13 ans",
-  "Entre 15 et 16 ans",
-];
 
 export default function AgendaScreen({ navigation }) {
   const user = useSelector((state) => state.user.value);
+
   const {
     modalVisible,
     mamanModalVisible,
@@ -91,21 +57,22 @@ export default function AgendaScreen({ navigation }) {
     rendezVousDuJour,
     markedDates,
     filteredRendezVous,
-    selectedRdvId, // Récupéré du hook
+    selectedRdvId,
+    setModalVisible,
+    setMamanModalVisible,
+    setBabyModalVisible,
+    setAgendaModalVisible,
+    setSearchModalVisible,
+    setModifierModalVisible,
+    setSvModalVisible,
     openModal,
-    closeModal,
     openMamanModal,
-    closeMamanModal,
     openBabyModal,
-    closeBabyModal,
     openAgendaModal,
-    closeAgendaModal,
-    openSvModalVisible,
-    closeSvModalVisible,
     openSearchModal,
-    closeSearchModal,
     openModifierModal,
-    closeModifierModal,
+    openSvModalVisible,
+    closeModalGeneric,
     handleDayPress,
     handleSubmit,
     handleSearch,
@@ -139,113 +106,233 @@ export default function AgendaScreen({ navigation }) {
         </View>
 
         {/* Modal d'ajout */}
-        <AddRendezVousModal
+        <FormModal
           visible={modalVisible}
-          onClose={closeModal}
-          selectedDate={selectedDate}
-          pourQui={pourQui}
-          setPourQui={setPourQui}
-          practicien={practicien}
-          setPracticien={setPracticien}
-          lieu={lieu}
-          setLieu={setLieu}
-          heure={heure}
-          setHeure={setHeure}
-          notes={notes}
-          setNotes={setNotes}
-          onSubmit={handleSubmit}
+          onClose={() => closeModalGeneric(setModalVisible)}
+          title="Nouveau Rendez-vous"
+          formContent={
+            <>
+              <Text>Date sélectionnée : {selectedDate}</Text>
+              <CustomTextInput
+                placeholder="Pour Qui"
+                value={pourQui}
+                onChangeText={setPourQui}
+              />
+              <CustomTextInput
+                placeholder="Practicien"
+                value={practicien}
+                onChangeText={setPracticien}
+              />
+              <CustomTextInput
+                placeholder="Lieu"
+                value={lieu}
+                onChangeText={setLieu}
+              />
+              <CustomTextInput
+                placeholder="Heure"
+                value={heure}
+                onChangeText={setHeure}
+              />
+              <CustomTextInput
+                placeholder="Notes"
+                value={notes}
+                onChangeText={setNotes}
+              />
+            </>
+          }
+          actions={
+            <>
+              <CustomButton title="Sauvegarder" onPress={handleSubmit} />
+              <CustomButton
+                title="Fermer"
+                onPress={() => closeModalGeneric(setModalVisible)}
+              />
+            </>
+          }
         />
 
         {/* Modal de recherche */}
-        <SearchRendezVousModal
+        <FormModal
           visible={searchModalVisible}
-          onClose={closeSearchModal}
-          searchInput={searchInput}
-          setSearchInput={setSearchInput}
-          filteredRendezVous={filteredRendezVous}
-          onSearch={handleSearch}
-          onModify={openModifierModal}
-          onDelete={handleDelete}
+          onClose={() => closeModalGeneric(setSearchModalVisible)}
+          title="Rechercher un Rendez-vous"
+          formContent={
+            <View>
+              <CustomTextInput
+                placeholder="Rechercher (ex. MAMAN)"
+                value={searchInput}
+                onChangeText={setSearchInput}
+              />
+              {Object.keys(filteredRendezVous).length > 0 ? (
+                <ScrollView>
+                  {Object.keys(filteredRendezVous).map((date) => (
+                    <View key={date}>
+                      <Text style={{ fontWeight: "bold" }}>{date}</Text>
+                      {filteredRendezVous[date].map((rdv) => (
+                        <View key={rdv._id} style={styles.rdvItem}>
+                          <Text>{`${rdv.pourQui} - ${rdv.heure} - ${rdv.lieu}`}</Text>
+                          <View style={styles.buttonRow}>
+                            <CustomButton
+                              title="Modifier"
+                              onPress={() => openModifierModal(rdv)}
+                            />
+                            <CustomButton
+                              title="Supprimer"
+                              onPress={() => handleDelete(rdv._id)}
+                            />
+                          </View>
+                        </View>
+                      ))}
+                    </View>
+                  ))}
+                </ScrollView>
+              ) : (
+                <Text>Aucun rendez-vous trouvé</Text>
+              )}
+            </View>
+          }
+          actions={
+            <>
+              <CustomButton title="Rechercher" onPress={handleSearch} />
+              <CustomButton
+                title="Fermer"
+                onPress={() => closeModalGeneric(setSearchModalVisible)}
+              />
+            </>
+          }
         />
 
         {/* Modal guide maman */}
-        <Modal visible={mamanModalVisible} animationType="slide" transparent>
-          <View style={styles.centeredView}>
-            <View style={styles.modalListView}>
-              <Text style={styles.modalTitle}>Maman rendez-vous</Text>
-              <ScrollView style={styles.scrollView}>
-                {mamanRendezVousList.map((rdv, index) => (
-                  <View key={index} style={styles.listItem}>
-                    <Text>{rdv}</Text>
-                  </View>
-                ))}
-              </ScrollView>
-              <CustomButton title="Fermer" onPress={closeMamanModal} />
-            </View>
-          </View>
-        </Modal>
+        <GuideModal
+          visible={mamanModalVisible}
+          onClose={() => closeModalGeneric(setMamanModalVisible)}
+          title="Maman Rendez-vous"
+          content={<Text>{mamanRendezVousList.join("\n")}</Text>}
+        />
 
         {/* Modal guide bébé */}
-        <Modal visible={babyModalVisible} animationType="slide" transparent>
-          <View style={styles.centeredView}>
-            <View style={styles.modalListView}>
-              <Text style={styles.modalTitle}>Baby rendez-vous</Text>
-              <ScrollView style={styles.scrollView}>
-                {babyRendezVousList.map((rdv, index) => (
-                  <View key={index} style={styles.listItem}>
-                    <Text>{rdv}</Text>
-                  </View>
-                ))}
-              </ScrollView>
-              <CustomButton title="Fermer" onPress={closeBabyModal} />
-            </View>
-          </View>
-        </Modal>
+        <GuideModal
+          visible={babyModalVisible}
+          onClose={() => closeModalGeneric(setBabyModalVisible)}
+          title="Baby Rendez-vous"
+          content={<Text>{babyRendezVousList.join("\n")}</Text>}
+        />
 
         {/* Modal agenda */}
-        <Modal visible={agendaModalVisible} animationType="slide" transparent>
-          <View style={styles.centeredView}>
-            <View style={styles.modalListView}>
-              <Text style={styles.modalTitle}>Agenda</Text>
-              <Calendar
-                onDayPress={handleDayPress}
-                style={{ borderRadius: 10, elevation: 4, margin: 40 }}
-                minDate="2024-10-31"
-                maxDate="2035-12-31"
-                markedDates={markedDates}
+        <FormModal
+          visible={agendaModalVisible}
+          onClose={() => closeModalGeneric(setAgendaModalVisible)}
+          title="Agenda"
+          formContent={
+            <Calendar
+              onDayPress={handleDayPress}
+              style={{ borderRadius: 10, elevation: 4, margin: 40 }}
+              minDate="2024-10-31"
+              maxDate="2035-12-31"
+              markedDates={markedDates}
+            />
+          }
+          actions={
+            <>
+              <CustomButton
+                title="Fermer"
+                onPress={() => closeModalGeneric(setAgendaModalVisible)}
               />
-              <CustomButton title="Fermer" onPress={closeAgendaModal} />
-            </View>
-          </View>
-        </Modal>
+            </>
+          }
+        />
 
         {/* Modal des rendez-vous du jour */}
-        <RendezVousModal
+        <FormModal
           visible={svModalVisible}
-          onClose={closeSvModalVisible}
-          selectedDate={selectedDate}
-          appointments={rendezVousDuJour}
-          onModify={openModifierModal}
-          onAdd={openModal}
-          onDelete={handleDelete}
+          onClose={() => closeModalGeneric(setSvModalVisible)}
+          title={`Rendez-vous - ${selectedDate || "Non sélectionné"}`}
+          formContent={
+            <ScrollView style={styles.scrollView}>
+              {rendezVousDuJour.length > 0 ? (
+                rendezVousDuJour.map((rdv) => (
+                  <View key={rdv._id} style={styles.rdvItem}>
+                    <View>
+                      <Text>Pour : {rdv.pourQui}</Text>
+                      <Text>Praticien : {rdv.practicien}</Text>
+                      <Text>Lieu : {rdv.lieu}</Text>
+                      <Text>Heure : {rdv.heure}</Text>
+                      <Text>Notes : {rdv.notes || "Aucune note"}</Text>
+                    </View>
+                    <View style={styles.buttonRow}>
+                      <CustomButton
+                        title="Modifier"
+                        onPress={() => openModifierModal(rdv)}
+                      />
+                      <CustomButton
+                        title="Supprimer"
+                        onPress={() => handleDelete(rdv._id)}
+                      />
+                    </View>
+                  </View>
+                ))
+              ) : (
+                <Text>Aucun rendez-vous trouvé pour cette date.</Text>
+              )}
+            </ScrollView>
+          }
+          actions={
+            <>
+              <CustomButton title="Ajouter" onPress={openModal} />
+              <CustomButton
+                title="Fermer"
+                onPress={() => closeModalGeneric(setSvModalVisible)}
+              />
+            </>
+          }
         />
 
         {/* Modal de modification */}
-        <ModifyRendezVousModal
+        <FormModal
           visible={modifierModalVisible}
-          onClose={closeModifierModal}
-          pourQui={pourQuiModif}
-          setPourQui={setPourQuiModif}
-          practicien={practicienModif}
-          setPracticien={setPracticienModif}
-          lieu={lieuModif}
-          setLieu={setLieuModif}
-          heure={heureModif}
-          setHeure={setHeureModif}
-          notes={notesModif}
-          setNotes={setNotesModif}
-          onUpdate={handleUpdate}
-          rdvId={selectedRdvId} // Utilise l’ID stocké
+          onClose={() => closeModalGeneric(setModifierModalVisible)}
+          title={`Modifier Rendez-vous - ${selectedDate || "Non sélectionné"}`}
+          formContent={
+            <>
+              <CustomTextInput
+                placeholder="Pour Qui"
+                value={pourQuiModif}
+                onChangeText={setPourQuiModif}
+              />
+              <CustomTextInput
+                placeholder="Practicien"
+                value={practicienModif}
+                onChangeText={setPracticienModif}
+              />
+              <CustomTextInput
+                placeholder="Lieu"
+                value={lieuModif}
+                onChangeText={setLieuModif}
+              />
+              <CustomTextInput
+                placeholder="Heure"
+                value={heureModif}
+                onChangeText={setHeureModif}
+              />
+              <CustomTextInput
+                placeholder="Notes"
+                value={notesModif}
+                onChangeText={setNotesModif}
+              />
+            </>
+          }
+          actions={
+            <>
+              <CustomButton
+                title="Mettre à jour"
+                onPress={() => handleUpdate(selectedRdvId)}
+              />
+              <CustomButton
+                title="Fermer"
+                onPress={() => closeModalGeneric(setModifierModalVisible)}
+              />
+            </>
+          }
         />
       </KeyboardAvoidingView>
     </TemplateView>

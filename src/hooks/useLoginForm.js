@@ -46,6 +46,7 @@ export const useLoginForm = (navigation) => {
           loginUser({
             username: formData.username,
             token: data.response.token,
+            projectId: data.response.project._id,
             tokenProject: data.response.project.token,
             role: data.response.role,
           })

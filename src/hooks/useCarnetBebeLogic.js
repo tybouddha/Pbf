@@ -1,8 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useSelector } from "react-redux";
+import { useCloseModalGeneric } from "../utils/useCloseModalGeneric";
 
 export const useCarnetBebeLogic = (navigation) => {
+  const closeModalGeneric = useCloseModalGeneric();
   const [modalVisible, setModalVisible] = useState(false);
+  const [modifierModalVisible, setModifierModalVisible] = useState(false);
   const [date, setDate] = useState(null);
   const [coucher, setCoucher] = useState(null);
   const [selle, setSelle] = useState(null);
@@ -10,13 +13,27 @@ export const useCarnetBebeLogic = (navigation) => {
   const [repas, setRepas] = useState(null);
   const [note, setNote] = useState(null);
   const [data, setData] = useState(false);
+  const [poids, setPoids] = useState("");
+  const [taille, setTaille] = useState("");
+  const [poidsModif, setPoidsModif] = useState("");
+  const [tailleModif, setTailleModif] = useState("");
   const [lastInfos, setLastInfos] = useState([]);
-  const [docBebe, setDocBebe] = useState([]);
+  const [coucherModif, setCoucherModif] = useState("");
+  const [selleModif, setSelleModif] = useState("");
+  const [couleurModif, setCouleurModif] = useState("");
+  const [repasModif, setRepasModif] = useState("");
+  const [noteModif, setNoteModif] = useState("");
+  const [dateModif, setDateModif] = useState("");
+  const [selectedId, setSelectedId] = useState(null);
   const [isDatePickerVisible, setDatePickerVisible] = useState(false);
   const [currentField, setCurrentField] = useState(null);
+  const [searchModalVisible, setSearchModalVisible] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
+  const [filteredDocs, setFilteredDocs] = useState({});
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const user = useSelector((state) => state.user.value);
-  const tokenProject = user.tokenProject;
+  const projectId = user.projectId;
   const username = user.username;
 
   const showDatePicker = (field) => {
@@ -26,81 +43,183 @@ export const useCarnetBebeLogic = (navigation) => {
 
   const hideDatePicker = () => setDatePickerVisible(false);
 
-  const handleDatePicked = (pickedDate) => {
-    const formattedDate = `${pickedDate.getDate()}-${
-      pickedDate.getMonth() + 1
-    }-${pickedDate.getFullYear()}`;
-    if (currentField === "date") setDate(formattedDate);
+  const handleDatePicked = (event, pickedDate) => {
+    if (pickedDate) {
+      const formattedDate = `${pickedDate.getDate()}-${
+        pickedDate.getMonth() + 1
+      }-${pickedDate.getFullYear()}`;
+      if (currentField === "date") setDate(formattedDate);
+      else if (currentField === "dateModif") setDateModif(formattedDate);
+    }
     hideDatePicker();
   };
 
-  const fetchData = () => {
-    if (username && tokenProject) {
-      fetch(`${process.env.EXPO_PUBLIC_API_URL}/carnetbebe/${tokenProject}`)
+  const fetchData = useCallback(() => {
+    if (username && projectId) {
+      fetch(`${process.env.EXPO_PUBLIC_API_URL}/carnetbebe/${projectId}`)
         .then((response) => response.json())
         .then((carnetBebe) => {
-          setDocBebe(carnetBebe);
-          if (carnetBebe && carnetBebe.infos.length) {
+          if (carnetBebe && carnetBebe.infos?.length) {
             const lastCarnetBebe = carnetBebe.infos.reverse().slice(0, 3);
             setLastInfos(lastCarnetBebe);
           } else {
-            console.log("Pas de données disponibles");
+            setLastInfos([]);
           }
         })
-        .catch((error) => console.error("Erreur fetchData :", error));
+        .catch((error) =>
+          setErrorMessage("Erreur de chargement des données : " + error.message)
+        );
     }
-  };
+  }, [username, projectId]);
 
-  const modalCarnetBebe = () => {
+  const openAddModal = () => {
     if (user.role === "lecteur") {
-      alert("ny pense meme pas, tu na pas le droit");
+      setErrorMessage("Vous n’avez pas les droits pour ajouter un document");
     } else {
       setModalVisible(true);
     }
   };
 
-  const closeModal = () => {
-    setModalVisible(false);
-    setDate(null);
-    setCoucher(null);
-    setCouleur(null);
-    setSelle(null);
-    setRepas(null);
-    setNote(null);
-  };
-
-  const saveInfos = () => setData(true);
-
-  const handleDelete = (docBebeId) => {
-    if (user.role === "lecteur") {
-      return alert("Va voir chez Polo Chino, si tu as acces");
-    }
-    if (!docBebeId) {
-      console.error("L'identifiant du document est manquant");
+  const saveInfos = () => {
+    if (!date) {
+      setErrorMessage("La date est requise");
       return;
     }
-
-    fetch(
-      `${process.env.EXPO_PUBLIC_API_URL}/carnetbebe/${tokenProject}/${docBebeId}`,
-      {
-        method: "DELETE",
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.result) fetchData();
-      })
-      .catch((error) =>
-        console.error("Erreur lors de la suppression :", error)
-      );
+    if (!repas) {
+      setErrorMessage("Le repas est requis");
+      return;
+    }
+    setErrorMessage(null);
+    setData(true);
   };
+
+  const openModifierModal = useCallback((item) => {
+    setCoucherModif(item.heureCoucher || "");
+    setSelleModif(item.selle || "");
+    setCouleurModif(item.couleurSelle || "");
+    setRepasModif(item.repas || "");
+    setNoteModif(item.notes || "");
+    setDateModif(item.date || "");
+    setPoidsModif(item.poids || "");
+    setTailleModif(item.taille || "");
+    setSelectedId(item._id);
+    setModifierModalVisible(true);
+  }, []);
+
+  const handleUpdate = useCallback(
+    (docBebeId) => {
+      if (!docBebeId) {
+        setErrorMessage("ID du document manquant");
+        return;
+      }
+      if (!dateModif) {
+        setErrorMessage("La date est requise pour la mise à jour");
+        return;
+      }
+      if (!repasModif) {
+        setErrorMessage("Le repas est requis pour la mise à jour");
+        return;
+      }
+      setErrorMessage(null);
+      const updatedInfo = {
+        date: dateModif,
+        heureCoucher: coucherModif,
+        selle: selleModif,
+        couleurSelle: couleurModif,
+        repas: repasModif,
+        notes: noteModif,
+        poids: poidsModif,
+        taille: tailleModif,
+      };
+      fetch(
+        `${process.env.EXPO_PUBLIC_API_URL}/carnetbebe/${projectId}/${docBebeId}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updatedInfo),
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.result) {
+            fetchData();
+            closeModalGeneric(setModifierModalVisible);
+          } else {
+            setErrorMessage(data.error || "Erreur lors de la mise à jour");
+          }
+        })
+        .catch((error) => setErrorMessage("Erreur réseau : " + error.message));
+    },
+    [
+      dateModif,
+      coucherModif,
+      selleModif,
+      couleurModif,
+      repasModif,
+      noteModif,
+      poidsModif,
+      tailleModif,
+      projectId,
+      fetchData,
+      setModifierModalVisible,
+    ]
+  );
+
+  const handleDelete = useCallback(
+    (docBebeId) => {
+      if (user.role === "lecteur") {
+        setErrorMessage("Vous n’avez pas les droits pour supprimer");
+        return;
+      }
+      if (!docBebeId) {
+        setErrorMessage("ID du document manquant");
+        return;
+      }
+      setErrorMessage(null);
+      fetch(
+        `${process.env.EXPO_PUBLIC_API_URL}/carnetbebe/${projectId}/${docBebeId}`,
+        {
+          method: "DELETE",
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.result) fetchData();
+          else setErrorMessage(data.error || "Erreur lors de la suppression");
+        })
+        .catch((error) => setErrorMessage("Erreur réseau : " + error.message));
+    },
+    [user.role, projectId, fetchData]
+  );
+
+  const handleSearch = useCallback(() => {
+    const normalizedSearch = searchInput.trim().toLowerCase();
+    if (!Array.isArray(lastInfos)) return;
+    const structuredFilteredDocs = {};
+    lastInfos.forEach((doc) => {
+      const dateKey = doc.date;
+      const matchesSearch =
+        doc.date?.toLowerCase().includes(normalizedSearch) ||
+        doc.heureCoucher?.toLowerCase().includes(normalizedSearch) ||
+        doc.repas?.toLowerCase().includes(normalizedSearch) ||
+        doc.selle?.toLowerCase().includes(normalizedSearch) ||
+        doc.couleurSelle?.toLowerCase().includes(normalizedSearch) ||
+        doc.notes?.toLowerCase().includes(normalizedSearch);
+      if (matchesSearch) {
+        if (!structuredFilteredDocs[dateKey])
+          structuredFilteredDocs[dateKey] = [];
+        structuredFilteredDocs[dateKey].push(doc);
+      }
+    });
+    setFilteredDocs(structuredFilteredDocs);
+  }, [searchInput, lastInfos]);
 
   useEffect(() => {
     fetchData();
-  }, [username, tokenProject]);
+  }, [fetchData]);
 
   useEffect(() => {
-    if (data) {
+    if (data && projectId) {
       const bodyObj = {
         username,
         date,
@@ -109,10 +228,11 @@ export const useCarnetBebeLogic = (navigation) => {
         selle,
         couleurSelle: couleur,
         notes: note,
+        poids,
+        taille,
       };
-
       fetch(
-        `${process.env.EXPO_PUBLIC_API_URL}/carnetbebe/ajout/${tokenProject}`,
+        `${process.env.EXPO_PUBLIC_API_URL}/carnetbebe/ajout/${projectId}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -132,34 +252,85 @@ export const useCarnetBebeLogic = (navigation) => {
           setSelle(null);
           setRepas(null);
           setNote(null);
+          setPoids("");
+          setTaille("");
           setData(false);
-          setModalVisible(false);
+          closeModalGeneric(setModalVisible);
         })
-        .catch((error) => console.error("Erreur saveInfos :", error));
+        .catch((error) => setErrorMessage("Erreur réseau : " + error.message));
+    } else if (data && !projectId) {
+      setErrorMessage("Erreur : projectId est undefined");
     }
-  }, [data]);
-
-  return {
-    modalVisible,
+  }, [
+    data,
+    username,
+    projectId,
     date,
     coucher,
+    repas,
+    selle,
+    couleur,
+    note,
+    poids,
+    taille,
+  ]);
+
+  return {
+    closeModalGeneric,
+    searchInput,
+    setSearchInput,
+    modalVisible,
+    modifierModalVisible,
+    filteredDocs,
+    setFilteredDocs,
+    date,
+    coucher,
+    searchModalVisible,
+    setSearchModalVisible,
+    selectedId,
     selle,
     couleur,
     repas,
     note,
+    poids,
+    taille,
+    dateModif,
+    coucherModif,
+    selleModif,
+    couleurModif,
+    repasModif,
+    noteModif,
+    poidsModif,
+    tailleModif,
     lastInfos,
     isDatePickerVisible,
+    setDate,
     setCoucher,
     setSelle,
     setCouleur,
     setRepas,
     setNote,
+    setPoids,
+    setTaille,
+    setCoucherModif,
+    setSelleModif,
+    setCouleurModif,
+    setRepasModif,
+    setNoteModif,
+    setDateModif,
+    setPoidsModif,
+    setTailleModif,
     showDatePicker,
     hideDatePicker,
     handleDatePicked,
-    modalCarnetBebe,
-    closeModal,
+    handleSearch,
+    openAddModal,
     saveInfos,
     handleDelete,
+    openModifierModal,
+    handleUpdate,
+    setModalVisible,
+    setModifierModalVisible,
+    errorMessage,
   };
 };

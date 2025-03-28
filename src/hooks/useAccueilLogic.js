@@ -1,8 +1,10 @@
 // hooks/useAccueilLogic.js
 import { useState, useCallback } from "react";
+import { useCloseModalGeneric } from "../utils/useCloseModalGeneric";
 
 export const useAccueilLogic = (user, appointments) => {
   const { tokenProject, role: userRole } = user;
+  const closeModalGeneric = useCloseModalGeneric();
 
   const [selectedDate, setSelectedDate] = useState("");
   const [agendaModalVisible, setAgendaModalVisible] = useState(false);
@@ -40,9 +42,10 @@ export const useAccueilLogic = (user, appointments) => {
   }, [userRole]);
 
   const generateInviteCode = useCallback(() => {
-    const link = `${tokenProject}/${inviteRole}`; // Utilise inviteRole
+    const link = `${tokenProject}/${inviteRole}`;
     setInviteLink(link);
-  }, [tokenProject, inviteRole]);
+    closeModalGeneric(setInviteModalVisible); // Ferme la modal d'invitation
+  }, [tokenProject, inviteRole, setInviteLink, setInviteModalVisible]);
 
   return {
     selectedDate,
@@ -62,5 +65,6 @@ export const useAccueilLogic = (user, appointments) => {
     setInviteModalVisible,
     setMamanModalVisible,
     setBabyModalVisible,
+    closeModalGeneric,
   };
 };

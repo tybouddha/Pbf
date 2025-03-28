@@ -35,4 +35,9 @@ export default StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ddd",
   },
+  error: {
+    color: "red",
+    marginBottom: 10,
+    textAlign: "center",
+  },
 });

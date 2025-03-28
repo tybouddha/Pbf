@@ -1,5 +1,5 @@
 // styles/sharedStyles/ModalStyles.js
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 export default StyleSheet.create({
   overlay: {
@@ -35,5 +35,15 @@ export default StyleSheet.create({
   actions: {
     flexDirection: "row",
     justifyContent: "flex-end",
+  },
+  rdvItem: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    padding: 10,
+  },
+  View: {
+    padding: 10,
+    flexDirection: "row",
+    gap: 10,
   },
 });
