@@ -1,23 +1,33 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
   background: {
     flex: 1,
-    width: Dimensions.get("screen").width,
-    height: Dimensions.get("screen").height,
-    justifyContent: "center",
-    alignItems: "center",
   },
   vwInstructions: {
-    padding: 50,
+    alignItems: "center",
+    marginVertical: 20,
   },
   txtInstructions: {
-    fontSize: 40,
-    fontFamily: "Caveat",
+    fontSize: 24,
+    fontWeight: "bold",
   },
   centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    padding: 20,
+  },
+  buttonContainer: {
+    marginTop: 20,
+  },
+  modalListView: {
+    padding: 20,
+  },
+  modalTitle: {
+    fontSize: 16,
+    marginVertical: 10,
+  },
+  error: {
+    color: "red",
+    marginBottom: 10,
+    textAlign: "center",
   },
 });
