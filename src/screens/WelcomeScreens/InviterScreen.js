@@ -4,10 +4,12 @@ import { useInviteForm } from "../../hooks/useInviteForm";
 import GuideModal from "../../components/shared/GuideModal";
 import CustomTextInput from "../../components/shared/CustomTextInput";
 import CustomButton from "../../components/shared/CustomButton";
+import { useCloseModalGeneric } from "../../utils/useCloseModalGeneric";
 import TemplateViewNoNav from "../../components/Template/TemplateViewNoNav";
 import styles from "../../styles/screenStyles/InviterScreenStyles";
 
 export default function InviterScreen({ navigation }) {
+  const closeModalGeneric = useCloseModalGeneric();
   const {
     formData,
     updateFormData,
@@ -25,7 +27,7 @@ export default function InviterScreen({ navigation }) {
       <View style={styles.container}>
         <GuideModal
           visible={modalEchecVisible}
-          onClose={() => setModalEchecVisible(false)}
+          onClose={() => closeModalGeneric(setModalEchecVisible)}
           title="Erreur"
           content={<Text>{messageError}</Text>}
         />

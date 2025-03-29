@@ -1,24 +1,23 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet } from "react-native";
+import { globalStyles } from "../GlobalStyles";
 
 export default StyleSheet.create({
   background: {
     flex: 1,
-    width: Dimensions.get("screen").width,
-    heigth: Dimensions.get("screen").height,
+    width: "100%",
+    height: "100%",
   },
   vwHeader: {
-    paddingTop: 20,
+    height: "10%",
+    width: "100%",
   },
   vwMain: {
-    flex: 1,
-    backgroundColor: "rgba(255, 255, 255, 0.5)",
-    justifyContent: "center",
-    alignItems: "center",
+    flex: 1, // Remplace height: "80%" ou similaire pour flexibilité
+    width: "100%",
   },
   vwFooter: {
-    height: 60,
-    backgroundColor: "#007ACC",
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+    height: "10%", // Hauteur fixe pour le footer, ajustable si besoin
+    width: "100%",
+    backgroundColor: globalStyles.primaryColor, // Exemple avec couleur globale
   },
 });

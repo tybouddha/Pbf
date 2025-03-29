@@ -1,148 +1,88 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet } from "react-native";
+import { globalStyles } from "../GlobalStyles";
 
 export default StyleSheet.create({
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.2)",
-  },
   modalOverlayScroll: {
     flex: 1,
-    paddingTop: 100,
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.2)",
-    height: Dimensions.get("screen").height * 1.5,
-    width: Dimensions.get("screen").width,
+    backgroundColor: "rgba(0, 0, 0, 0.5)", // Overlay semi-transparent
   },
-
   modalBackground: {
-    alignItems: "center",
-    width: Dimensions.get("screen").width * 0.8,
-    backgroundColor: "white",
-    borderRadius: 12,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-
-  txtTitre: {
-    fontSize: 20,
-    width: "100%",
-    textAlign: "center",
-    paddingTop: 20,
-    paddingBottom: 20,
-  },
-
-  btnModal: {
-    display: "flex",
-    borderWidth: 1,
-    width: 120,
-    alignItems: "center",
-    borderColor: "pink",
-    borderRadius: 12,
-    justifyContent: "space-between",
-    marginTop: 10,
-  },
-  btnModalFermer: {
-    display: "flex",
-    width: "100%",
-    alignItems: "flex-end",
-    paddingRight: 20,
-  },
-  textButtonX: {
-    fontSize: 20,
-    fontWeight: "700",
+    flex: 1,
+    margin: 20,
+    backgroundColor: globalStyles.backgroundColor,
+    borderRadius: 10,
+    padding: 20,
   },
   vwHaut: {
     alignItems: "center",
-    width: Dimensions.get("screen").width * 0.8,
+    marginBottom: 20,
+  },
+  txtTitre: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: globalStyles.textColor,
   },
   vwAuMileu: {
-    alignItems: "center",
-    width: Dimensions.get("screen").width * 0.8,
+    flex: 1,
   },
   vwInputSuper: {
-    display: "flex",
-    paddingTop: 10,
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
+    marginVertical: 10,
   },
   vwInput: {
-    display: "flex",
-    width: "80%",
-    height: 50,
-    borderRadius: 12,
-    margin: 5,
-  },
-  txtInput: {
-    height: "100%",
-    padding: 10,
-    fontSize: 16,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    padding: 5,
   },
   vwInputSuperNotes: {
-    display: "flex",
-    paddingTop: 10,
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
+    marginVertical: 10,
   },
   vwInputNotes: {
-    width: "80%",
-    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    padding: 5,
+    minHeight: 100, // Pour les notes multilignes
   },
-  txtInputNotes: {
-    padding: 10,
+  listItem: {
     fontSize: 16,
+    color: globalStyles.textColor,
   },
   vwInputPhotos: {
-    flexWrap: "wrap",
     flexDirection: "row",
-    justifyContent: "center",
+    flexWrap: "wrap",
+    marginVertical: 10,
+  },
+  photoContainer: {
+    margin: 5,
+    alignItems: "center",
   },
   imgElemStyle: {
     width: 100,
     height: 100,
+    borderRadius: 5,
   },
-  photoContainer: {
-    alignItems: "flex-end",
-    margin: 5,
-  },
-
   vwButonsEnBas: {
-    alignItems: "center",
-    width: Dimensions.get("screen").width * 0.8,
-    justifyContent: "flex-end",
-    paddingBottom: 20,
+    flexDirection: "row",
+    justifyContent: "space-around",
     marginTop: 20,
   },
   btnAjouter: {
-    backgroundColor: "pink",
-    borderWidth: 1,
-    width: 120,
-    alignItems: "center",
-    borderRadius: 12,
-    justifyContent: "center",
-    marginTop: 10,
-    paddingVertical: 5,
+    backgroundColor: globalStyles.primaryColor,
+    padding: 10,
+    borderRadius: 5,
+  },
+  btnAjouterText: {
+    color: "#fff",
+    fontSize: 16,
   },
   btn: {
-    backgroundColor: "pink",
-    borderWidth: 1,
-    width: 120,
-    alignItems: "center",
-    borderRadius: 12,
-    justifyContent: "center",
-    marginTop: 10,
-    paddingVertical: 5,
-  },
-  listItem: {
+    backgroundColor: globalStyles.primaryColor,
     padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
+    borderRadius: 5,
+  },
+  btnText: {
+    color: "#fff",
+    fontSize: 16,
   },
 });

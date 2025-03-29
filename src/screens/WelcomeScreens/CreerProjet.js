@@ -6,10 +6,12 @@ import { useSignupForm } from "../../hooks/useSingUpForm"; // Hook extrait dans 
 import GuideModal from "../../components/shared/GuideModal";
 import CustomTextInput from "../../components/shared/CustomTextInput";
 import CustomButton from "../../components/shared/CustomButton";
+import { useCloseModalGeneric } from "../../utils/useCloseModalGeneric";
 import TemplateViewNoNav from "../../components/Template/TemplateViewNoNav";
 import styles from "../../styles/screenStyles/CreerProjetStyles";
 
 export default function CreerProjetScreen({ navigation }) {
+  const closeModalGeneric = useCloseModalGeneric();
   const {
     formData,
     updateFormData,
@@ -31,7 +33,7 @@ export default function CreerProjetScreen({ navigation }) {
       <View style={styles.container}>
         <GuideModal
           visible={modalEchecVisible}
-          onClose={() => setModalEchecVisible(false)}
+          onClose={() => closeModalGeneric(setModalEchecVisible)}
           title="Erreur"
           content={<Text>{messageError}</Text>}
         />

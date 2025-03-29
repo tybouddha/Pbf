@@ -1,55 +1,64 @@
-import { View, Image, TouchableOpacity } from "react-native";
+import React, { useCallback } from "react";
+import { View, Image } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome5";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import CustomButton from "../shared/CustomButton";
 import styles from "../../styles/NavComponentsStyles/HeaderViewStyles";
+import { globalStyles } from "../../styles/globalStyles";
 
-export default function HeaderView(props) {
+const defaultLogo = require("../../../assets/images/logo128.png");
+
+export default function HeaderView({
+  navigation,
+  afficherArriere = false, // Corrigé "Arriére" → "Arriere"
+  cacheProfile = false, // Simplifié "cacheProfilevwProfil"
+  logo = defaultLogo, // Prop optionnelle pour personnaliser le logo
+}) {
   const userRedux = useSelector((state) => state.user.value);
 
-  const pressedProfil = () => {
-    console.log("btn profil 🙍‍♂️");
-    props.navigation.navigate("Profil");
-  };
+  // Navigation vers Profil
+  const handleProfilePress = useCallback(() => {
+    navigation.navigate("Profil");
+  }, [navigation]);
 
-  const allerArrière = () => {
-    props.navigation.goBack();
-  };
-
-  const vwProfil = (
-    <View
-      style={
-        props.afficherArriére
-          ? styles.containerProfil
-          : styles.containerProfilSolo
-      }
-    >
-      <CustomButton onPress={() => pressedProfil()}>
-        <FontAwesome name={"user-ninja"} size={25} color={"#FFFFFF"} />
-      </CustomButton>
-    </View>
-  );
-
-  const vwArrière = (
-    <View style={styles.containerArrière}>
-      <CustomButton onPress={() => allerArrière()}>
-        <FontAwesome name={"arrow-left"} size={50} color={"#000"} />
-      </CustomButton>
-    </View>
-  );
+  // Retour en arrière
+  const handleBackPress = useCallback(() => {
+    navigation.goBack();
+  }, [navigation]);
 
   return (
     <View style={styles.container}>
-      {props.afficherArriére ? vwArrière : null}
+      {/* Bouton retour (conditionnel) */}
+      {afficherArriere && (
+        <View style={styles.containerArrière}>
+          <CustomButton onPress={handleBackPress}>
+            <FontAwesome
+              name="arrow-left"
+              size={30}
+              color={globalStyles.textColor}
+            />
+          </CustomButton>
+        </View>
+      )}
+
+      {/* Logo central */}
       <View style={styles.containerLogo}>
         <Image
           style={styles.image}
-          source={require("../../../assets/images/logo128.png")}
-          alt="logo"
+          source={logo}
           resizeMode="contain"
+          accessibilityLabel="Logo de l’application"
         />
       </View>
-      {props.cacheProfilevwProfil ? null : vwProfil}
+
+      {/* Bouton profil (conditionnel) */}
+      {!cacheProfile && (
+        <View style={styles.containerProfil}>
+          <CustomButton onPress={handleProfilePress}>
+            <FontAwesome name="user-ninja" size={25} color="#FFFFFF" />
+          </CustomButton>
+        </View>
+      )}
     </View>
   );
 }

@@ -106,7 +106,12 @@ export default function ProfilScreen({ navigation }) {
           />
           <View style={styles.buttonContainer}>
             <CustomButton title="Sauvegarder" onPress={handleUpdate} />
-            <CustomButton title="Fermer" onPress={() => navigation.goBack()} />
+            <CustomButton
+              title="Fermer"
+              onPress={() =>
+                navigation.navigate("TabNavigator", { screen: "Accueil" })
+              }
+            />
             <CustomButton title="Déconnexion" onPress={handleLogout} />
           </View>
         </View>

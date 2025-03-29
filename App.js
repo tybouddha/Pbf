@@ -1,13 +1,15 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Button } from "react-native";
-
+import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { Provider } from "react-redux";
+import { configureStore } from "@reduxjs/toolkit";
+import * as Font from "expo-font";
+import { useState, useEffect } from "react";
 
-import AcceuilScreen from "./src/screens/AcceuilScreen";
+import AccueilScreen from "./src/screens/AccueilScreen"; // Corrigé "Acceuil" -> "Accueil"
 import AgendaScreen from "./src/screens/AgendaScreen";
 import DocumentsScreen from "./src/screens/DocumentsScreen";
 import CarnetBebeScreen from "./src/screens/CarnetBebeScreen";
@@ -17,14 +19,10 @@ import ProfilScreen from "./src/screens/ProfilScreen";
 import LoginScreen from "./src/screens/WelcomeScreens/LoginScreen";
 import CameraScreen from "./src/screens/CameraScreen";
 import InviterScreen from "./src/screens/WelcomeScreens/InviterScreen";
+import styles from "./src/styles/AppStyles";
 
 import IconView from "./src/components/NavComponents/IconView";
 
-import { useState, useEffect } from "react";
-import * as Font from "expo-font";
-
-import { Provider } from "react-redux";
-import { configureStore } from "@reduxjs/toolkit";
 import user from "./reducers/user";
 import document from "./reducers/document";
 
@@ -42,9 +40,10 @@ const TabNavigator = () => {
         tabBarIcon: ({ color, size, focused }) => {
           let iconName = "";
           let screenName = "";
-          if (route.name === "Acceuil") {
+          if (route.name === "Accueil") {
+            // Corrigé "Acceuil" -> "Accueil"
             iconName = "home";
-            screenName = "acceuil";
+            screenName = "accueil"; // Uniformisé en minuscules
           } else if (route.name === "Agenda") {
             iconName = "calendar-alt";
             screenName = "agenda";
@@ -52,10 +51,8 @@ const TabNavigator = () => {
             iconName = "file-medical-alt";
             screenName = "documents";
           } else if (route.name === "CarnetBebe") {
-            iconName = "baby"; // changee
-            screenName = "carnet bebé";
-          } else {
             iconName = "baby";
+            screenName = "carnet bébé"; // Corrigé "carnet bebé"
           }
 
           return (
@@ -74,14 +71,14 @@ const TabNavigator = () => {
         tabBarShowLabel: false,
         tabBarStyle: {
           backgroundColor: "#007ACC",
-          borderTopLeftRadius: 10, // Radius for top-left corner
-          borderTopRightRadius: 10, // Radius for top-right corner
+          borderTopLeftRadius: 10,
+          borderTopRightRadius: 10,
           height: 70,
           paddingTop: 10,
         },
       })}
     >
-      <Tab.Screen name="Acceuil" component={AcceuilScreen} />
+      <Tab.Screen name="Accueil" component={AccueilScreen} />
       <Tab.Screen name="Agenda" component={AgendaScreen} />
       <Tab.Screen name="Documents" component={DocumentsScreen} />
       <Tab.Screen name="CarnetBebe" component={CarnetBebeScreen} />
@@ -91,25 +88,37 @@ const TabNavigator = () => {
 
 export default function App() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
+  const [loadingError, setLoadingError] = useState(null); // Ajouté pour gérer les erreurs de chargement
+
   useEffect(() => {
     async function loadFonts() {
-      await Font.loadAsync({
-        Caveat: require("./assets/fonts/Caveat-VariableFont_wght.ttf"),
-      });
-      setFontsLoaded(true);
+      try {
+        await Font.loadAsync({
+          Caveat: require("./assets/fonts/Caveat-VariableFont_wght.ttf"),
+        });
+        setFontsLoaded(true);
+      } catch (error) {
+        setLoadingError(
+          "Erreur lors du chargement des polices : " + error.message
+        );
+      }
     }
     loadFonts();
   }, []);
 
   if (!fontsLoaded) {
-    console.log("--- font NOT loaded");
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text>Loading...</Text>
+      <View style={styles.loadingContainer}>
+        {loadingError ? (
+          <Text style={styles.errorText}>{loadingError}</Text>
+        ) : (
+          <>
+            <ActivityIndicator size="large" color="#007ACC" />
+            <Text style={styles.loadingText}>Chargement...</Text>
+          </>
+        )}
       </View>
     );
-  } else {
-    console.log("--- font loaded");
   }
 
   return (
@@ -120,21 +129,12 @@ export default function App() {
           <Stack.Screen name="TabNavigator" component={TabNavigator} />
           <Stack.Screen name="CreerProjet" component={CreerProjetScreen} />
           <Stack.Screen name="Profil" component={ProfilScreen} />
-          <Stack.Screen name="Documents" component={DocumentsScreen} />
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Camera" component={CameraScreen} />
-          <Stack.Screen name="invite" component={InviterScreen} />
+          <Stack.Screen name="Invite" component={InviterScreen} />{" "}
+          {/* Corrigé "invite" -> "Invite" */}
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

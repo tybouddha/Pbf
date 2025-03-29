@@ -1,22 +1,28 @@
 import { View, ImageBackground } from "react-native";
-
 import HeaderView from "../NavComponents/HeaderView";
 import styles from "../../styles/TemplateStyles/TemplateViewStyles";
 
-export default function TemplateView(props) {
+// Image de fond par défaut
+const defaultBackground = require("../../../assets/images/projectbaby-background.jpg");
+
+export default function TemplateView({
+  navigation,
+  afficherArriére = false, // Par défaut, pas de bouton retour
+  children,
+  backgroundImage = defaultBackground, // Prop optionnelle pour personnaliser le fond
+  backgroundStyle, // Prop optionnelle pour surcharger le style du fond
+}) {
   return (
     <ImageBackground
-      source={require("../../../assets/images/projectbaby-background.jpg")}
-      style={styles.background}
+      source={backgroundImage}
+      style={[styles.background, backgroundStyle]} // Combine style par défaut et surcharge
     >
+      {/* En-tête avec navigation */}
       <View style={styles.vwHeader}>
-        <HeaderView
-          navigation={props.navigation}
-          afficherArriére={props.afficherArriére}
-        />
+        <HeaderView navigation={navigation} afficherArriére={afficherArriére} />
       </View>
-      <View style={styles.vwMain}>{props.children}</View>
-      {/* {props.children} sont touts les trucs de le vrai Screen */}
+      {/* Contenu principal */}
+      <View style={styles.vwMain}>{children}</View>
     </ImageBackground>
   );
 }

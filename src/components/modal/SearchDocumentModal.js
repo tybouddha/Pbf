@@ -1,9 +1,12 @@
+// components/modal/SearchDocumentModal.js
 import React from "react";
-import { Modal, View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import { useDocumentLogic } from "../../hooks/useDocumentLogic";
 import CustomButton from "../shared/CustomButton";
 import CustomTextInput from "../shared/CustomTextInput";
+import FormModal from "../shared/FormModal";
 import styles from "../../styles/modalStyles/SearchDocumentModalStyles";
+import { globalStyles } from "../../styles/globalStyles";
 
 export default function SearchModal({
   visible,
@@ -11,37 +14,38 @@ export default function SearchModal({
   afficherRechercheScrollView,
   onClose,
 }) {
-  const { searchInput, setSearchInput, searchDocuments, fermerSearchModal } =
+  const { searchInput, setSearchInput, searchDocuments, closeSearchModal } =
     useDocumentLogic();
 
   return (
-    <Modal visible={visible} animationType="fade" transparent>
-      <View style={styles.centeredView}>
+    <FormModal
+      visible={visible}
+      onClose={closeSearchModal}
+      title="Rechercher un document"
+      formContent={
         <View style={styles.modalListView}>
           <Text style={styles.modalTitle}>Rechercher</Text>
           <CustomTextInput
             placeholder="Rechercher vos documents"
             value={searchInput}
             onChangeText={setSearchInput}
+            style={{ marginBottom: 10 }}
           />
-          {afficherRechercheScrollView && (
+          {afficherRechercheScrollView && cardArrRecherche.length > 0 ? (
             <ScrollView style={styles.scrollView}>
               {cardArrRecherche}
             </ScrollView>
+          ) : (
+            afficherRechercheScrollView && (
+              <Text style={globalStyles.errorText}>Aucun résultat trouvé</Text>
+            )
           )}
           <View style={styles.vwRechercheButons}>
-            <CustomButton
-              title="Rechercher"
-              onPress={searchDocuments}
-            ></CustomButton>
-            <CustomButton
-              title="Fermer"
-              onPress={fermerSearchModal}
-              style={styles.btnModal}
-            ></CustomButton>
+            <CustomButton title="Rechercher" onPress={searchDocuments} />
+            <CustomButton title="Fermer" onPress={closeSearchModal} />
           </View>
         </View>
-      </View>
-    </Modal>
+      }
+    />
   );
 }

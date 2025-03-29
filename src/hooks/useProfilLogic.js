@@ -97,7 +97,7 @@ export const useProfilLogic = (navigation) => {
       const data = await response.json();
       if (data.result) {
         fetchData();
-        navigation.navigate("Accueil");
+        navigation.navigate("TabNavigator", { screen: "Accueil" });
       } else {
         setErrorMessage(data.error || "Erreur lors de la mise à jour");
       }

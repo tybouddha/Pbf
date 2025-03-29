@@ -1,5 +1,6 @@
+// screens/DocumentsScreen.js
 import React from "react";
-import { View, Text, TouchableOpacity, Image, ScrollView } from "react-native";
+import { View, Text, ScrollView, Image } from "react-native";
 import { useDocumentLogic } from "../hooks/useDocumentLogic";
 import CustomButton from "../components/shared/CustomButton";
 import TemplateView from "../components/Template/TemplateView";
@@ -7,6 +8,7 @@ import VwAjouterDocument from "../components/Template/VwAjouterDocument";
 import SearchModal from "../components/modal/SearchDocumentModal";
 import PhotoModal from "../components/modal/PhotoModal";
 import styles from "../styles/screenStyles/DocumentScreenStyles";
+import { globalStyles } from "../styles/globalStyles";
 
 export default function DocumentsScreen({ navigation }) {
   const {
@@ -17,16 +19,18 @@ export default function DocumentsScreen({ navigation }) {
     photoModalVisible,
     documentChoisi,
     afficherRechercheScrollView,
+    errorMessage,
     fetchData,
     fermerModalVwAjouterDoc,
     cameraScreenFermerModalSansEffacerRedux,
     poubelleAppuyee,
     appuyerPhoto,
     ouvrirModalAjoutDocument,
-    setSearchModalVisible,
+    closeSearchModal,
+    closePhotoModal,
   } = useDocumentLogic(navigation);
 
-  const createDocumentCard = (elem, index) => (
+  const createDocumentCard = (elem) => (
     <View key={elem._id} style={styles.card}>
       <View style={styles.cardRayon1}>
         <Text style={styles.txtDate}>{elem.dateAjoute.substring(0, 10)}</Text>
@@ -52,10 +56,7 @@ export default function DocumentsScreen({ navigation }) {
         </View>
       </View>
       <View style={styles.vwButonSupprimer}>
-        <CustomButton
-          title="Supprimer"
-          onPress={() => poubelleAppuyee(elem)}
-        ></CustomButton>
+        <CustomButton title="Supprimer" onPress={() => poubelleAppuyee(elem)} />
       </View>
     </View>
   );
@@ -68,34 +69,36 @@ export default function DocumentsScreen({ navigation }) {
       <View style={styles.vwInstructions}>
         <Text style={styles.txtInstructions}>Documents</Text>
       </View>
+      {errorMessage && (
+        <Text style={globalStyles.errorText}>{errorMessage}</Text>
+      )}
       <VwAjouterDocument
-        visible={documentRedux.modalOuvert}
-        fermerModal={fermerModalVwAjouterDoc}
-        fermerModalSansEffacer={cameraScreenFermerModalSansEffacerRedux}
         navigation={navigation}
         fetchDocumentsData={fetchData}
+        visible={documentRedux.modalOuvert}
+        onClose={fermerModalVwAjouterDoc}
       />
       <SearchModal
         visible={searchModalVisible}
         cardArrRecherche={cardArrRecherche}
         afficherRechercheScrollView={afficherRechercheScrollView}
-        onClose={() => setSearchModalVisible(false)}
+        onClose={closeSearchModal}
       />
       <PhotoModal
         visible={photoModalVisible}
         documentChoisi={documentChoisi}
-        onClose={() => setPhotoModalVisible(false)}
+        onClose={closePhotoModal}
       />
       <View style={styles.container}>
         <View style={styles.vwHaut}>
           <CustomButton
             title="Rechercher un Document"
             onPress={() => setSearchModalVisible(true)}
-          ></CustomButton>
+          />
           <CustomButton
-            title="Ajoute un document"
+            title="Ajouter un document"
             onPress={ouvrirModalAjoutDocument}
-          ></CustomButton>
+          />
         </View>
         <ScrollView>{cardArr}</ScrollView>
       </View>

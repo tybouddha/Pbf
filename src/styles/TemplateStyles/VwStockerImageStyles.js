@@ -1,51 +1,43 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet } from "react-native";
+import { globalStyles } from "../globalStyles";
 
 export default StyleSheet.create({
   modalOverlay: {
     flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.5)", // Overlay semi-transparent
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.2)",
   },
   modalBackground: {
-    justifyContent: "center",
+    backgroundColor: globalStyles.backgroundColor,
+    borderRadius: 10,
+    padding: 20,
+    width: "80%",
     alignItems: "center",
-    width: Dimensions.get("screen").width * 0.8,
-    backgroundColor: "white",
-    borderRadius: 12,
-    padding: 30,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-
-  imgElemStyle: {
-    width: Dimensions.get("screen").width * 0.6,
-    height: Dimensions.get("screen").width * 0.6,
-  },
-  photoContainer: {
-    alignItems: "flex-end",
-    margin: 5,
-  },
-  btnModal: {
-    display: "flex",
-    backgroundColor: "pink",
-    borderWidth: 1,
-    width: Dimensions.get("screen").width * 0.4,
-    padding: 10,
-    alignItems: "center",
-    borderRadius: 12,
-    justifyContent: "space-between",
-    marginTop: 10,
   },
   textMessage: {
+    fontSize: 18,
+    color: globalStyles.textColor,
+    marginBottom: 20,
+  },
+  photoContainer: {
+    marginBottom: 20,
+  },
+  imgElemStyle: {
+    width: 200,
+    height: 200,
+    borderRadius: 5,
+  },
+  btnModal: {
+    backgroundColor: globalStyles.primaryColor,
     padding: 10,
+    borderRadius: 5,
+    marginVertical: 5,
+    width: "50%",
+    alignItems: "center",
+  },
+  textButton: {
+    color: "#fff",
     fontSize: 16,
-    textAlign: "center",
   },
 });

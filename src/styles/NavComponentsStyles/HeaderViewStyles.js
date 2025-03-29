@@ -1,38 +1,33 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet } from "react-native";
+import { globalStyles } from "../globalStyles";
 
 export default StyleSheet.create({
   container: {
-    display: "flex",
     flexDirection: "row",
+    alignItems: "center",
     justifyContent: "space-between",
-    padding: 5,
-    backgroundColor: "#007ACC",
-    height: 70,
-    width: "100%",
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
-  },
-  image: {
-    height: 80,
-    aspectRatio: 1,
+    backgroundColor: globalStyles.primaryColor,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
   },
   containerLogo: {
+    flex: 1,
     alignItems: "center",
-    position: "absolute",
-    left: Dimensions.get("screen").width * 0.5 - 40,
   },
-  containerProfilSolo: {
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "flex-end",
-    paddingRight: 10,
-  },
-  containerProfil: {
-    justifyContent: "center",
-    marginRight: 10,
+  image: {
+    width: 50,
+    height: 50,
   },
   containerArrière: {
-    justifyContent: "center",
-    marginLeft: 10,
+    width: 50,
+    alignItems: "flex-start",
+  },
+  containerProfil: {
+    width: 50,
+    alignItems: "flex-end",
+  },
+  containerProfilSolo: {
+    width: 50,
+    alignItems: "flex-end",
   },
 });
