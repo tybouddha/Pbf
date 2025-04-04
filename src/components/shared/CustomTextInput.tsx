@@ -1,8 +1,24 @@
 import React from "react";
-import { TextInput, TouchableOpacity } from "react-native";
+import {
+  TextInput,
+  TouchableOpacity,
+  TouchableOpacityProps,
+  TextInputProps,
+} from "react-native";
 import styles from "../../styles/sharedStyles/CustomTextInputStyles";
 
-const CustomTextInput = ({
+//& au lieu d'extend pour éviter les problèmes de typage (ex: onBlur existe TouchableOpacityProps et TextInputProps mais avec des types différents)
+type CustomTextInputProps = TouchableOpacityProps &
+  TextInputProps & {
+    placeholder?: string;
+    value?: string;
+    onChangeText?: (text: string) => void;
+    secureTextEntry?: boolean;
+    editable?: boolean;
+    onPress?: () => void;
+  };
+
+const CustomTextInput: React.FC<CustomTextInputProps> = ({
   placeholder,
   value,
   onChangeText,

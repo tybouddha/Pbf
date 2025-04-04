@@ -3,7 +3,19 @@ import { Modal, Text, View, ScrollView } from "react-native";
 import CustomButton from "./CustomButton";
 import styles from "../../styles/sharedStyles/ModalStyles";
 
-const GuideModal = ({ visible, onClose, title, content }) => (
+interface GuideModalProps {
+  visible: boolean;
+  onClose: () => void;
+  title?: string;
+  content: React.ReactNode;
+}
+
+const GuideModal: React.FC<GuideModalProps> = ({
+  visible,
+  onClose,
+  title,
+  content,
+}) => (
   <Modal
     visible={visible}
     transparent

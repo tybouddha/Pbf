@@ -8,7 +8,8 @@
   },
   "include": [
     "**/*.ts", // Inclut tous les fichiers .ts
-    "**/*.tsx" // Inclut tous les fichiers .tsx
+    "**/*.tsx", // Inclut tous les fichiers .tsx
+    "src/components/shared/CarnetBebeForm.js"
   ],
   "exclude": [
     "node_modules", // Exclut node_modules
