@@ -1,0 +1,18 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "jsx": "react-native",
+    "noEmit": true,
+    "esModuleInterop": true
+  },
+  "include": [
+    "**/*.ts", // Inclut tous les fichiers .ts
+    "**/*.tsx" // Inclut tous les fichiers .tsx
+  ],
+  "exclude": [
+    "node_modules", // Exclut node_modules
+    "babel.config.js", // Exclut les fichiers de config non TypeScript
+    "metro.config.js"
+  ]
+}

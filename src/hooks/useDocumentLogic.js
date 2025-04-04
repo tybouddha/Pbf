@@ -1,4 +1,3 @@
-// src/hooks/useDocumentLogic.js
 import { useEffect, useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -7,13 +6,13 @@ import {
   sauvegarderDocumentInfos,
   supprimerTousLesPhotos,
 } from "../reducers/document";
-import { useCloseModalGeneric } from "../utils/useCloseModalGeneric";
+import { useModalLogic } from "../hooks/useModalLogic";
 
 export const useDocumentLogic = (navigation) => {
   const userRedux = useSelector((state) => state.user.value);
   const documentRedux = useSelector((state) => state.document.value);
   const dispatch = useDispatch();
-  const closeModal = useCloseModalGeneric();
+  const { openModal, closeModal } = useModalLogic();
 
   const [documentsDonnes, setDocumentsDonnes] = useState([]);
   const [documentsDonnesRecherche, setDocumentsDonnesRecherche] = useState([]);
@@ -117,22 +116,21 @@ export const useDocumentLogic = (navigation) => {
     // Ne ferme pas la modale ici : l'utilisateur verra les résultats
   }, [searchInput, documentsDonnes]);
 
+  const openSearchModal = useCallback(
+    () => openModal(setSearchModalVisible),
+    [openModal]
+  );
   const closeSearchModal = useCallback(() => {
     closeModal(setSearchModalVisible);
     setSearchInput("");
     setAfficherRechercheScrollView(false);
-    // Garde isSearchActive à true pour persister les résultats dans DocumentsScreen
-  }, []);
+  }, [closeModal]);
 
   const resetSearch = useCallback(() => {
     setSearchInput("");
     setDocumentsDonnesRecherche(documentsDonnes);
     setIsSearchActive(false);
   }, [documentsDonnes]);
-
-  const openSearchModal = useCallback(() => {
-    setSearchModalVisible(true);
-  }, []);
 
   return {
     documentRedux,

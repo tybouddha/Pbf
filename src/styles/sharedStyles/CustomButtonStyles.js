@@ -21,4 +21,7 @@ export default StyleSheet.create({
     textAlign: "center",
     flexShrink: 1,
   },
+  buttonDisabled: {
+    opacity: 0.5, // Style typique pour un bouton désactivé
+  },
 });
