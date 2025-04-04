@@ -2,7 +2,8 @@ import React from "react";
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import FormModal from "../shared/FormModal";
 import styles from "../../styles/TemplateStyles/VwStockerImageStyles";
-import { globalStyles } from "../../styles/globalStyles";
+import CustomButton from "../shared/CustomButton";
+import { globalStyles } from "../../styles/GlobalStyles";
 import { useStockerImageLogic } from "../../hooks/useStockerImageLogic";
 
 export default function VwStockerImage({
@@ -27,20 +28,20 @@ export default function VwStockerImage({
       <View style={styles.photoContainer}>
         <Image source={{ uri: photoCacheUri }} style={styles.imgElemStyle} />
       </View>
-      <TouchableOpacity
+      <CustomButton
         onPress={stockerPhoto}
         style={styles.btnModal}
         activeOpacity={0.8}
       >
         <Text style={styles.textButton}>Oui</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
+      </CustomButton>
+      <CustomButton
         onPress={() => closeModalGeneric(onClose)}
         style={styles.btnModal}
         activeOpacity={0.8}
       >
         <Text style={styles.textButton}>Non</Text>
-      </TouchableOpacity>
+      </CustomButton>
     </View>
   );
 

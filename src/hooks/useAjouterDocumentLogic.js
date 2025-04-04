@@ -4,8 +4,8 @@ import { useFocusEffect } from "@react-navigation/native";
 import {
   sauvegarderDocumentInfos,
   documentModalRestOuvert,
-} from "../../reducers/document";
-import { useCloseModalGeneric } from "../components/shared/useCloseModalGeneric";
+} from "../reducers/document";
+import { useCloseModalGeneric } from "../utils/useCloseModalGeneric";
 
 export const useAjouterDocumentLogic = ({
   navigation,

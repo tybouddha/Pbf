@@ -1,6 +1,6 @@
 // components/shared/FormModal.js
 import { Modal, Text, View } from "react-native";
-import styles from "../../styles/sharedStyles/ModalStyles";
+import styles from "../../styles/sharedStyles/FormModalStyles";
 
 const FormModal = ({ visible, onClose, title, formContent, actions }) => (
   <Modal

@@ -1,9 +1,10 @@
+// src/hooks/useCameraLogic.js
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Camera } from "expo-camera"; // Import simplifié
+import { Camera } from "expo-camera"; // Pour les permissions
 import { useIsFocused } from "@react-navigation/native";
-import { documentModalRestOuvert } from "../../reducers/document";
-import { useCloseModalGeneric } from "../components/shared/useCloseModalGeneric";
+import { documentModalRestOuvert } from "../reducers/document";
+import { useCloseModalGeneric } from "../utils/useCloseModalGeneric";
 
 export const useCameraLogic = (navigation) => {
   const dispatch = useDispatch();
@@ -11,27 +12,40 @@ export const useCameraLogic = (navigation) => {
   const documentRedux = useSelector((state) => state.document.value);
   const closeModalGeneric = useCloseModalGeneric();
 
-  const [hasPermission, setHasPermission] = useState(null); // null = en attente
-  const [type, setType] = useState(Camera.Constants.Type.back);
-  const [flashMode, setFlashMode] = useState(Camera.Constants.FlashMode.off);
+  const [hasPermission, setHasPermission] = useState(null);
+  const [type, setType] = useState(null);
+  const [flashMode, setFlashMode] = useState(null);
   const [modalStockerVisible, setModalStockerVisible] = useState(false);
   const [photoCacheUri, setPhotoCacheUri] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const cameraRef = useRef(null);
   const [photoModalVisible, setPhotoModalVisible] = useState(false);
 
-  // Demande de permissions au montage
   useEffect(() => {
     (async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync();
-      setHasPermission(status === "granted");
-      if (status !== "granted") {
-        setErrorMessage("Permission d’accès à la caméra refusée");
+      console.log("Début de la demande de permissions");
+      try {
+        const { status } = await Camera.requestCameraPermissionsAsync();
+        console.log("Statut des permissions:", status);
+        setHasPermission(status === "granted");
+        if (status === "granted") {
+          console.log("Permissions accordées, définition de type et flashMode");
+          setType("back");
+          setFlashMode("off");
+          console.log("Type: back, FlashMode: off");
+        } else {
+          setErrorMessage("Permission d’accès à la caméra refusée");
+          console.log("Permissions refusées");
+        }
+      } catch (error) {
+        setErrorMessage(
+          "Erreur lors de la demande de permissions : " + error.message
+        );
+        console.log("Erreur dans useEffect:", error.message);
       }
     })();
   }, []);
 
-  // Prendre une photo
   const takePicture = useCallback(async () => {
     if (!cameraRef.current) {
       setErrorMessage("Erreur : caméra non disponible");
@@ -40,31 +54,32 @@ export const useCameraLogic = (navigation) => {
     try {
       const photo = await cameraRef.current.takePictureAsync({ quality: 0.3 });
       setPhotoCacheUri(photo.uri);
-      setPhotoModalVisible(true); // Ouvre PhotoModal au lieu de modalStockerVisible
+      setPhotoModalVisible(true);
       setErrorMessage(null);
     } catch (error) {
       setErrorMessage("Erreur lors de la prise de photo : " + error.message);
     }
-  }, [dispatch]);
+  }, []);
 
-  // Fermer la modale de stockage
   const fermerModalStockerImage = useCallback(() => {
     closeModalGeneric(() => {
       setModalStockerVisible(false);
-      setPhotoCacheUri(null); // Nettoie l’URI
+      setPhotoCacheUri(null);
     });
   }, []);
 
   const ouvrirModalStocker = useCallback(() => {
-    setPhotoModalVisible(false); // Ferme PhotoModal
+    setPhotoModalVisible(false);
     dispatch(documentModalRestOuvert());
-    setModalStockerVisible(true); // Ouvre VwStockerImage
+    setModalStockerVisible(true);
   }, [dispatch]);
 
+  const fermerPhotoModal = useCallback(() => {
+    setPhotoModalVisible(false);
+    setPhotoCacheUri(null);
+  }, []);
+
   return {
-    photoModalVisible,
-    fermerPhotoModal,
-    ouvrirModalStocker,
     hasPermission,
     isFocused,
     type,
@@ -72,10 +87,13 @@ export const useCameraLogic = (navigation) => {
     modalStockerVisible,
     photoCacheUri,
     cameraRef,
-    errorMessage, // Ajouté pour affichage
+    errorMessage,
+    photoModalVisible,
     setType,
     setFlashMode,
     takePicture,
     fermerModalStockerImage,
+    ouvrirModalStocker,
+    fermerPhotoModal,
   };
 };

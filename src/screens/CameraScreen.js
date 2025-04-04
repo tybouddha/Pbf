@@ -1,12 +1,16 @@
+// src/screens/CameraScreen.js
 import React from "react";
 import { View, Text } from "react-native";
-import { Camera } from "expo-camera";
+import { CameraView } from "expo-camera"; // Nouvelle importation
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useCameraLogic } from "../hooks/useCameraLogic";
 import CustomButton from "../components/shared/CustomButton";
 import VwStockerImage from "../components/Template/VwStockerImage";
+import PhotoModal from "../components/modal/PhotoModal";
 import styles from "../styles/screenStyles/CameraScreenStyles";
-import { globalStyles } from "../styles/globalStyles";
+import { globalStyles } from "../styles/GlobalStyles";
+
+console.log("CameraView importé :", CameraView); // Vérifie l'importation
 
 export default function CameraScreen({ navigation }) {
   const {
@@ -18,13 +22,15 @@ export default function CameraScreen({ navigation }) {
     photoCacheUri,
     cameraRef,
     errorMessage,
+    photoModalVisible,
     setType,
     setFlashMode,
     takePicture,
     fermerModalStockerImage,
+    ouvrirModalStocker,
+    fermerPhotoModal,
   } = useCameraLogic(navigation);
 
-  // État de chargement des permissions
   if (hasPermission === null) {
     return (
       <View style={globalStyles.centered}>
@@ -35,7 +41,6 @@ export default function CameraScreen({ navigation }) {
     );
   }
 
-  // Pas de permission ou écran non actif
   if (!hasPermission || !isFocused) {
     return (
       <View style={globalStyles.centered}>
@@ -46,68 +51,76 @@ export default function CameraScreen({ navigation }) {
     );
   }
 
+  if (type === null || flashMode === null) {
+    return (
+      <View style={globalStyles.centered}>
+        <Text style={globalStyles.textColor}>
+          Initialisation de la caméra...
+        </Text>
+      </View>
+    );
+  }
+
   return (
-    <Camera
-      type={type}
-      flashMode={flashMode}
-      ref={(ref) => (cameraRef.current = ref)}
-      style={styles.camera}
-    >
-      {errorMessage && (
+    <>
+      <FontAwesome
+        name="star"
+        size={50}
+        color="red"
+        style={{ position: "absolute", top: 20, left: 20 }}
+      />
+      <CameraView
+        facing={type} // "facing" remplace "type"
+        flash={flashMode} // "flash" remplace "flashMode"
+        ref={(ref) => (cameraRef.current = ref)}
+        style={styles.camera}
+      >
+        {errorMessage && (
+          <View style={styles.buttonsContainer}>
+            <Text style={globalStyles.errorText}>{errorMessage}</Text>
+          </View>
+        )}
         <View style={styles.buttonsContainer}>
-          <Text style={globalStyles.errorText}>{errorMessage}</Text>
+          <CustomButton
+            onPress={() =>
+              navigation.navigate("TabNavigator", { screen: "Documents" })
+            }
+          >
+            <FontAwesome name="arrow-left" size={25} color="#ffffff" />
+          </CustomButton>
+          <CustomButton
+            onPress={() => setType(type === "back" ? "front" : "back")}
+          >
+            <FontAwesome name="rotate-right" size={25} color="#ffffff" />
+          </CustomButton>
+          <CustomButton
+            onPress={() => setFlashMode(flashMode === "off" ? "torch" : "off")}
+          >
+            <FontAwesome
+              name="flash"
+              size={25}
+              color={flashMode === "off" ? "#ffffff" : "#e8be4b"}
+            />
+          </CustomButton>
         </View>
-      )}
+        <View style={styles.snapContainer}>
+          <CustomButton onPress={takePicture}>
+            <FontAwesome name="circle-thin" size={95} color="#ffffff" />
+          </CustomButton>
+        </View>
+      </CameraView>
+      <PhotoModal
+        visible={photoModalVisible}
+        documentChoisi={{ url: [photoCacheUri] }}
+        onClose={fermerPhotoModal}
+        ouvrirModalStocker={ouvrirModalStocker}
+      />
       <VwStockerImage
         photoCacheUri={photoCacheUri}
         navigation={navigation}
         visible={modalStockerVisible}
         onClose={fermerModalStockerImage}
       />
-      <View style={styles.buttonsContainer}>
-        <CustomButton
-          onPress={() =>
-            navigation.navigate("TabNavigator", { screen: "Documents" })
-          }
-        >
-          <FontAwesome name="arrow-left" size={25} color="#ffffff" />
-        </CustomButton>
-        <CustomButton
-          onPress={() =>
-            setType(
-              type === Camera.Constants.Type.back
-                ? Camera.Constants.Type.front
-                : Camera.Constants.Type.back
-            )
-          }
-        >
-          <FontAwesome name="rotate-right" size={25} color="#ffffff" />
-        </CustomButton>
-        <CustomButton
-          onPress={() =>
-            setFlashMode(
-              flashMode === Camera.Constants.FlashMode.off
-                ? Camera.Constants.FlashMode.torch
-                : Camera.Constants.FlashMode.off
-            )
-          }
-        >
-          <FontAwesome
-            name="flash"
-            size={25}
-            color={
-              flashMode === Camera.Constants.FlashMode.off
-                ? "#ffffff"
-                : "#e8be4b"
-            }
-          />
-        </CustomButton>
-      </View>
-      <View style={styles.snapContainer}>
-        <CustomButton onPress={takePicture}>
-          <FontAwesome name="circle-thin" size={95} color="#ffffff" />
-        </CustomButton>
-      </View>
-    </Camera>
+    </>
   );
 }

@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../../reducers/user";
+import { loginUser } from "../reducers/user";
 
 export const useSignupForm = (navigation) => {
   const dispatch = useDispatch();

@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { logoutUser } from "../../reducers/user";
-import { logOutDocument } from "../../reducers/document";
+import { logoutUser } from "../reducers/user";
+import { logOutDocument } from "../reducers/document";
 import { useCloseModalGeneric } from "../utils/useCloseModalGeneric";
 
 export const useProfilLogic = (navigation) => {

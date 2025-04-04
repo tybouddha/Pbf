@@ -4,7 +4,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome5";
 import { useSelector } from "react-redux";
 import CustomButton from "../shared/CustomButton";
 import styles from "../../styles/NavComponentsStyles/HeaderViewStyles";
-import { globalStyles } from "../../styles/globalStyles";
+import { globalStyles } from "../../styles/GlobalStyles";
 
 const defaultLogo = require("../../../assets/images/logo128.png");
 

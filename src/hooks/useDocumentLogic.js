@@ -1,4 +1,4 @@
-// hooks/useDocumentLogic.js
+// src/hooks/useDocumentLogic.js
 import { useEffect, useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -6,8 +6,8 @@ import {
   documentModalResterFermer,
   sauvegarderDocumentInfos,
   supprimerTousLesPhotos,
-} from "../../reducers/document";
-import { useCloseModalGeneric } from "../components/shared/useCloseModalGeneric";
+} from "../reducers/document";
+import { useCloseModalGeneric } from "../utils/useCloseModalGeneric";
 
 export const useDocumentLogic = (navigation) => {
   const userRedux = useSelector((state) => state.user.value);
@@ -24,9 +24,24 @@ export const useDocumentLogic = (navigation) => {
   const [afficherRechercheScrollView, setAfficherRechercheScrollView] =
     useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [isSearchActive, setIsSearchActive] = useState(false);
 
   const fetchData = useCallback(() => {
-    // ... (inchangé)
+    if (!userRedux.tokenProject) {
+      setErrorMessage("Erreur : token de projet manquant");
+      return;
+    }
+    fetch(
+      `${process.env.EXPO_PUBLIC_API_URL}/document/${userRedux.tokenProject}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        const array = data.documentsData || [];
+        setDocumentsDonnes(array);
+        setDocumentsDonnesRecherche(array);
+        setErrorMessage(null);
+      })
+      .catch((error) => setErrorMessage("Erreur fetchData : " + error.message));
   }, [userRedux.tokenProject]);
 
   useEffect(() => {
@@ -34,19 +49,59 @@ export const useDocumentLogic = (navigation) => {
   }, [fetchData]);
 
   const fermerModalVwAjouterDoc = useCallback(() => {
-    // ... (inchangé)
+    dispatch(sauvegarderDocumentInfos({ nom: "", practicien: "", notes: "" }));
+    dispatch(supprimerTousLesPhotos());
+    dispatch(documentModalResterFermer());
   }, [dispatch]);
 
   const cameraScreenFermerModalSansEffacerRedux = useCallback(() => {
-    // ... (inchangé)
+    dispatch(documentModalResterFermer());
   }, [dispatch]);
 
   const poubelleAppuyee = useCallback(
     async (elem) => {
-      // ... (inchangé)
+      if (userRedux.role === "lecteur") {
+        setErrorMessage("Accès bloqué : rôle lecteur uniquement");
+        return;
+      }
+      try {
+        const response = await fetch(
+          `${process.env.EXPO_PUBLIC_API_URL}/document/${elem._id}`,
+          {
+            method: "DELETE",
+          }
+        );
+        const data = await response.json();
+        if (data.result) {
+          fetchData();
+          setErrorMessage(null);
+        } else {
+          setErrorMessage(data.error || "Erreur lors de la suppression");
+        }
+      } catch (error) {
+        setErrorMessage("Erreur réseau : " + error.message);
+      }
     },
     [userRedux.role, fetchData]
   );
+
+  const appuyerPhoto = useCallback((doc) => {
+    setDocumentChoisi(doc);
+    setPhotoModalVisible(true);
+  }, []);
+
+  const ouvrirModalAjoutDocument = useCallback(() => {
+    if (userRedux.role === "lecteur") {
+      setErrorMessage("Accès bloqué : rôle lecteur uniquement");
+    } else {
+      dispatch(documentModalRestOuvert());
+    }
+  }, [userRedux.role, dispatch]);
+
+  const closePhotoModal = useCallback(() => {
+    closeModal(setPhotoModalVisible);
+    setDocumentChoisi(null);
+  }, []);
 
   const searchDocuments = useCallback(() => {
     setAfficherRechercheScrollView(true);
@@ -56,28 +111,27 @@ export const useDocumentLogic = (navigation) => {
         field?.toLowerCase().includes(normalizedSearch)
       )
     );
+    console.log("Résultats filtrés :", newDocumentsDonnes);
     setDocumentsDonnesRecherche(newDocumentsDonnes);
-    closeModal(setSearchModalVisible); // Ferme après recherche
+    setIsSearchActive(true);
+    // Ne ferme pas la modale ici : l'utilisateur verra les résultats
   }, [searchInput, documentsDonnes]);
-
-  const appuyerPhoto = useCallback((doc) => {
-    setDocumentChoisi(doc);
-    setPhotoModalVisible(true);
-  }, []);
-
-  const ouvrirModalAjoutDocument = useCallback(() => {
-    // ... (inchangé)
-  }, [userRedux.role, dispatch]);
-
-  const closePhotoModal = useCallback(() => {
-    closeModal(setPhotoModalVisible);
-    setDocumentChoisi(null);
-  }, []);
 
   const closeSearchModal = useCallback(() => {
     closeModal(setSearchModalVisible);
     setSearchInput("");
     setAfficherRechercheScrollView(false);
+    // Garde isSearchActive à true pour persister les résultats dans DocumentsScreen
+  }, []);
+
+  const resetSearch = useCallback(() => {
+    setSearchInput("");
+    setDocumentsDonnesRecherche(documentsDonnes);
+    setIsSearchActive(false);
+  }, [documentsDonnes]);
+
+  const openSearchModal = useCallback(() => {
+    setSearchModalVisible(true);
   }, []);
 
   return {
@@ -96,8 +150,12 @@ export const useDocumentLogic = (navigation) => {
     appuyerPhoto,
     ouvrirModalAjoutDocument,
     searchDocuments,
-    setSearchInput, // Ajouté pour SearchModal
-    closePhotoModal, // Centralisé
-    closeSearchModal, // Centralisé
+    setSearchInput,
+    closePhotoModal,
+    closeSearchModal,
+    openSearchModal,
+    isSearchActive,
+    resetSearch,
+    searchInput,
   };
 };

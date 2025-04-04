@@ -1,51 +1,67 @@
 // components/modal/SearchDocumentModal.js
 import React from "react";
-import { View, Text, ScrollView } from "react-native";
-import { useDocumentLogic } from "../../hooks/useDocumentLogic";
-import CustomButton from "../shared/CustomButton";
-import CustomTextInput from "../shared/CustomTextInput";
+import { ScrollView, Text } from "react-native";
 import FormModal from "../shared/FormModal";
+import CustomTextInput from "../shared/CustomTextInput";
+import CustomButton from "../shared/CustomButton";
+import { globalStyles } from "../../styles/GlobalStyles";
 import styles from "../../styles/modalStyles/SearchDocumentModalStyles";
-import { globalStyles } from "../../styles/globalStyles";
 
-export default function SearchModal({
+const SearchDocumentModal = ({
   visible,
   cardArrRecherche,
   afficherRechercheScrollView,
   onClose,
-}) {
-  const { searchInput, setSearchInput, searchDocuments, closeSearchModal } =
-    useDocumentLogic();
+  searchInput,
+  setSearchInput,
+  searchDocuments,
+}) => {
+  const formContent = (
+    <>
+      <CustomTextInput
+        placeholder="Rechercher vos documents"
+        value={searchInput}
+        onChangeText={setSearchInput}
+        style={styles.searchInput}
+      />
+      {afficherRechercheScrollView && cardArrRecherche.length > 0 ? (
+        <ScrollView style={styles.scrollView}>{cardArrRecherche}</ScrollView>
+      ) : (
+        afficherRechercheScrollView && (
+          <Text style={globalStyles.errorText}>Aucun résultat trouvé</Text>
+        )
+      )}
+    </>
+  );
+
+  const actions = (
+    <>
+      <CustomButton
+        title="Rechercher"
+        onPress={() => {
+          console.log("Rechercher cliqué");
+          searchDocuments();
+        }}
+      />
+      <CustomButton
+        title="Fermer"
+        onPress={() => {
+          console.log("Fermer cliqué");
+          onClose();
+        }}
+      />
+    </>
+  );
 
   return (
     <FormModal
       visible={visible}
-      onClose={closeSearchModal}
+      onClose={onClose}
       title="Rechercher un document"
-      formContent={
-        <View style={styles.modalListView}>
-          <Text style={styles.modalTitle}>Rechercher</Text>
-          <CustomTextInput
-            placeholder="Rechercher vos documents"
-            value={searchInput}
-            onChangeText={setSearchInput}
-            style={{ marginBottom: 10 }}
-          />
-          {afficherRechercheScrollView && cardArrRecherche.length > 0 ? (
-            <ScrollView style={styles.scrollView}>
-              {cardArrRecherche}
-            </ScrollView>
-          ) : (
-            afficherRechercheScrollView && (
-              <Text style={globalStyles.errorText}>Aucun résultat trouvé</Text>
-            )
-          )}
-          <View style={styles.vwRechercheButons}>
-            <CustomButton title="Rechercher" onPress={searchDocuments} />
-            <CustomButton title="Fermer" onPress={closeSearchModal} />
-          </View>
-        </View>
-      }
+      formContent={formContent}
+      actions={actions}
     />
   );
-}
+};
+
+export default SearchDocumentModal;

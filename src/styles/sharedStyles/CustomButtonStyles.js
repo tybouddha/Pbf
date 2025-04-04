@@ -4,19 +4,21 @@ export default StyleSheet.create({
   button: {
     paddingVertical: 12,
     paddingHorizontal: 20,
-    width: "80%",
+    minWidth: 60,
+    maxWidth: "90%", // Limite la largeur sans couper
+    height: 50,
     borderRadius: 25,
     borderWidth: 2,
     borderColor: "#007ACC",
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "transparent",
     alignItems: "center",
+    justifyContent: "center",
     marginVertical: 10,
-  },
-  buttonDisabled: {
-    opacity: 0.5,
   },
   buttonText: {
     fontFamily: "Caveat",
-    fontSize: 30,
+    fontSize: 22, // Plus petit pour s’adapter
+    textAlign: "center",
+    flexShrink: 1,
   },
 });

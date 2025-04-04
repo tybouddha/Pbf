@@ -1,3 +1,4 @@
+// src/App.js
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -5,11 +6,11 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Provider } from "react-redux";
-import { configureStore } from "@reduxjs/toolkit";
 import * as Font from "expo-font";
 import { useState, useEffect } from "react";
 
-import AccueilScreen from "./src/screens/AccueilScreen"; // Corrigé "Acceuil" -> "Accueil"
+import store from "./store"; // Import du store
+import AccueilScreen from "./src/screens/AcceuilScreen";
 import AgendaScreen from "./src/screens/AgendaScreen";
 import DocumentsScreen from "./src/screens/DocumentsScreen";
 import CarnetBebeScreen from "./src/screens/CarnetBebeScreen";
@@ -19,16 +20,32 @@ import ProfilScreen from "./src/screens/ProfilScreen";
 import LoginScreen from "./src/screens/WelcomeScreens/LoginScreen";
 import CameraScreen from "./src/screens/CameraScreen";
 import InviterScreen from "./src/screens/WelcomeScreens/InviterScreen";
-import styles from "./src/styles/AppStyles";
-
+import { styles } from "./src/styles/AppStyles";
 import IconView from "./src/components/NavComponents/IconView";
 
-import user from "./reducers/user";
-import document from "./reducers/document";
+// Hook pour charger les polices (optionnel)
+const useLoadFonts = () => {
+  const [fontsLoaded, setFontsLoaded] = useState(false);
+  const [loadingError, setLoadingError] = useState(null);
 
-const store = configureStore({
-  reducer: { user, document },
-});
+  useEffect(() => {
+    async function loadFonts() {
+      try {
+        await Font.loadAsync({
+          Caveat: require("./assets/fonts/Caveat-VariableFont_wght.ttf"),
+        });
+        setFontsLoaded(true);
+      } catch (error) {
+        setLoadingError(
+          "Erreur lors du chargement des polices : " + error.message
+        );
+      }
+    }
+    loadFonts();
+  }, []);
+
+  return { fontsLoaded, loadingError };
+};
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -41,9 +58,8 @@ const TabNavigator = () => {
           let iconName = "";
           let screenName = "";
           if (route.name === "Accueil") {
-            // Corrigé "Acceuil" -> "Accueil"
             iconName = "home";
-            screenName = "accueil"; // Uniformisé en minuscules
+            screenName = "accueil";
           } else if (route.name === "Agenda") {
             iconName = "calendar-alt";
             screenName = "agenda";
@@ -52,9 +68,8 @@ const TabNavigator = () => {
             screenName = "documents";
           } else if (route.name === "CarnetBebe") {
             iconName = "baby";
-            screenName = "carnet bébé"; // Corrigé "carnet bebé"
+            screenName = "carnet bébé";
           }
-
           return (
             <IconView
               iconName={iconName}
@@ -87,24 +102,7 @@ const TabNavigator = () => {
 };
 
 export default function App() {
-  const [fontsLoaded, setFontsLoaded] = useState(false);
-  const [loadingError, setLoadingError] = useState(null); // Ajouté pour gérer les erreurs de chargement
-
-  useEffect(() => {
-    async function loadFonts() {
-      try {
-        await Font.loadAsync({
-          Caveat: require("./assets/fonts/Caveat-VariableFont_wght.ttf"),
-        });
-        setFontsLoaded(true);
-      } catch (error) {
-        setLoadingError(
-          "Erreur lors du chargement des polices : " + error.message
-        );
-      }
-    }
-    loadFonts();
-  }, []);
+  const { fontsLoaded, loadingError } = useLoadFonts();
 
   if (!fontsLoaded) {
     return (
@@ -131,8 +129,7 @@ export default function App() {
           <Stack.Screen name="Profil" component={ProfilScreen} />
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Camera" component={CameraScreen} />
-          <Stack.Screen name="Invite" component={InviterScreen} />{" "}
-          {/* Corrigé "invite" -> "Invite" */}
+          <Stack.Screen name="Invite" component={InviterScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

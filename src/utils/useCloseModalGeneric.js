@@ -13,5 +13,6 @@ export const useCloseModalGeneric = () =>
     if (typeof setModalState !== "function") {
       throw new Error("setModalState must be a function");
     }
+    console.log("closeModal appelé avec setModalVisible");
     setModalState(false);
   }, []);

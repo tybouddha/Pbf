@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import CustomButton from "../shared/CustomButton";
 import CustomTextInput from "../shared/CustomTextInput";
 import FormModal from "../shared/FormModal";
 import styles from "../../styles/TemplateStyles/VwAjouterDocumentStyles";
@@ -29,13 +30,13 @@ export default function VwAjouterDocument({
 
   const photoElements = imagesArr.map(({ uri, index }) => (
     <View key={index} style={styles.photoContainer}>
-      <TouchableOpacity
+      <CustomButton
         onPress={() =>
           dispatch({ type: "document/removePhoto", payload: index })
         }
       >
         <FontAwesome name="times" size={20} color="red" />
-      </TouchableOpacity>
+      </CustomButton>
       <Image source={{ uri }} style={styles.imgElemStyle} />
     </View>
   ));
@@ -81,13 +82,13 @@ export default function VwAjouterDocument({
         <View style={styles.vwInputPhotos}>{photoElements}</View>
       )}
       <View style={styles.vwButonsEnBas}>
-        <TouchableOpacity
+        <CustomButton
           onPress={handleCameraPress}
           style={styles.btnAjouter}
           activeOpacity={0.8}
         >
           <Text style={styles.btnAjouterText}>Caméra</Text>
-        </TouchableOpacity>
+        </CustomButton>
         <TouchableOpacity
           onPress={handleSubmit}
           style={styles.btn}

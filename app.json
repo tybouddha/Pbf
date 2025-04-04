@@ -12,14 +12,19 @@
       "backgroundColor": "#ffffff",
       "newArchEnabled": true
     },
+    "permissions": ["camera"],
     "ios": {
+      "infoPlist": {
+        "NSCameraUsageDescription": "Cette app utilise la caméra pour prendre des photos."
+      },
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": ["CAMERA"]
     },
     "web": {
       "favicon": "./assets/favicon.png"

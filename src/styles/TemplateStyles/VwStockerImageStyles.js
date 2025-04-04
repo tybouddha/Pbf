@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { globalStyles } from "../globalStyles";
+import { globalStyles } from "../GlobalStyles";
 
 export default StyleSheet.create({
   modalOverlay: {

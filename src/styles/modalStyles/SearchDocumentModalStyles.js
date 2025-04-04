@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { globalStyles } from "../../styles/globalStyles";
+import { globalStyles } from "../../styles/GlobalStyles";
 
 export default StyleSheet.create({
   centeredView: {
@@ -34,5 +34,17 @@ export default StyleSheet.create({
     backgroundColor: globalStyles.primaryColor,
     padding: 10,
     borderRadius: 5,
+  },
+  modalContent: {
+    width: "80%",
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    padding: 20,
+    alignItems: "center",
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 10,
   },
 });

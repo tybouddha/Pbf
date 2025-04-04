@@ -1,3 +1,4 @@
+// src/reducers/document.js
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
@@ -14,7 +15,8 @@ export const documentSlice = createSlice({
   name: "document",
   initialState,
   reducers: {
-    sauvgaurderDocumentInfos: (state, action) => {
+    sauvegarderDocumentInfos: (state, action) => {
+      // Corrigé "sauvgaurder"
       state.value.nom = action.payload.nom;
       state.value.practicien = action.payload.practicien;
       state.value.notes = action.payload.notes;
@@ -22,7 +24,8 @@ export const documentSlice = createSlice({
     documentModalRestOuvert: (state) => {
       state.value.modalOuvert = true;
     },
-    doucumentModalResterFermer: (state) => {
+    documentModalResterFermer: (state) => {
+      // Corrigé "doucument"
       state.value.modalOuvert = false;
     },
     ajouterPhoto: (state, action) => {
@@ -39,7 +42,7 @@ export const documentSlice = createSlice({
     logOutDocument: (state) => {
       state.value.nom = null;
       state.value.notes = null;
-      state.value.photos = null;
+      state.value.photos = []; // Corrigé de null à [] pour cohérence
       state.value.practicien = null;
       state.value.modalOuvert = false;
     },
@@ -47,12 +50,13 @@ export const documentSlice = createSlice({
 });
 
 export const {
-  sauvgaurderDocumentInfos,
+  sauvegarderDocumentInfos,
   documentModalRestOuvert,
-  doucumentModalResterFermer,
+  documentModalResterFermer,
   ajouterPhoto,
   supprimerPhoto,
   supprimerTousLesPhotos,
   logOutDocument,
 } = documentSlice.actions;
+
 export default documentSlice.reducer;
