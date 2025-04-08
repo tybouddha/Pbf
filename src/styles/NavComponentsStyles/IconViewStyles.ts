@@ -12,7 +12,6 @@ export default StyleSheet.create({
   },
   sousContainerFocused: {
     backgroundColor: "rgba(255, 255, 255, 0.2)",
-    // opacity: 0.3,// <- ne puex pas utiliser opacity, sinon touts les elements dedans le View aurais le meme opacity
     alignItems: "center",
     justifyContent: "center",
     padding: 5,

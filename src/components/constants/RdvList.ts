@@ -1,4 +1,4 @@
-export const mamanRendezVousList = [
+export const mamanRendezVousList: string[] = [
   "1er trimestre : Prendre rendez-vous avec un médecin généraliste, gynécologue ou sage-femme pour confirmer la grossesse.",
   "Déclarer la grossesse à la Caf et à l'assurance maladie.",
   "Planifier la 1ère échographie.",
@@ -12,7 +12,7 @@ export const mamanRendezVousList = [
   "Prévoir la rééducation périnéale et abdominale.",
 ];
 
-export const babyRendezVousList = [
+export const babyRendezVousList: string[] = [
   "Dans les 8 jours suivant la naissance",
   "Au cours de la 2ème semaine",
   "Avant la fin du 1er mois",

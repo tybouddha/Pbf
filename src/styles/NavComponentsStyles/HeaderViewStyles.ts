@@ -1,12 +1,17 @@
 import { StyleSheet } from "react-native";
-import { globalStyles } from "../GlobalStyles";
+import { primaryColor } from "../GlobalStyles";
+
+export const ImageStyles = {
+  width: 50,
+  height: 50,
+};
 
 export default StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: globalStyles.primaryColor,
+    backgroundColor: primaryColor,
     paddingHorizontal: 10,
     paddingVertical: 5,
   },
@@ -15,8 +20,7 @@ export default StyleSheet.create({
     alignItems: "center",
   },
   image: {
-    width: 50,
-    height: 50,
+    ...ImageStyles,
   },
   containerArrière: {
     width: 50,

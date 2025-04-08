@@ -1,20 +1,32 @@
+// components/navComponents/HeaderView.tsx
 import React, { useCallback } from "react";
-import { View, Image } from "react-native";
+import { View, Image, ImageSourcePropType } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome5";
 import { useSelector } from "react-redux";
 import CustomButton from "../shared/CustomButton";
 import styles from "../../styles/NavComponentsStyles/HeaderViewStyles";
-import { globalStyles } from "../../styles/GlobalStyles";
+import { ImageStyles } from "../../styles/NavComponentsStyles/HeaderViewStyles";
 
-const defaultLogo = require("../../../assets/images/logo128.png");
+import { textColor } from "../../styles/GlobalStyles";
+import { NavigationProp } from "@react-navigation/native";
+import { RootState } from "../../../store";
 
-export default function HeaderView({
+const defaultLogo = require("../../../assets/images/images/logo128.png");
+
+interface HeaderViewProps {
+  navigation: NavigationProp<any>;
+  afficherArriere?: boolean;
+  cacheProfile?: boolean;
+  logo?: ImageSourcePropType;
+}
+
+const HeaderView: React.FC<HeaderViewProps> = ({
   navigation,
-  afficherArriere = false, // Corrigé "Arriére" → "Arriere"
-  cacheProfile = false, // Simplifié "cacheProfilevwProfil"
-  logo = defaultLogo, // Prop optionnelle pour personnaliser le logo
-}) {
-  const userRedux = useSelector((state) => state.user.value);
+  afficherArriere = false,
+  cacheProfile = false,
+  logo = defaultLogo,
+}) => {
+  const userRedux = useSelector((state: RootState) => state.user.value);
 
   // Navigation vers Profil
   const handleProfilePress = useCallback(() => {
@@ -32,11 +44,7 @@ export default function HeaderView({
       {afficherArriere && (
         <View style={styles.containerArrière}>
           <CustomButton onPress={handleBackPress}>
-            <FontAwesome
-              name="arrow-left"
-              size={30}
-              color={globalStyles.textColor}
-            />
+            <FontAwesome name="arrow-left" size={30} color={textColor} />
           </CustomButton>
         </View>
       )}
@@ -44,7 +52,7 @@ export default function HeaderView({
       {/* Logo central */}
       <View style={styles.containerLogo}>
         <Image
-          style={styles.image}
+          style={ImageStyles}
           source={logo}
           resizeMode="contain"
           accessibilityLabel="Logo de l’application"
@@ -61,4 +69,6 @@ export default function HeaderView({
       )}
     </View>
   );
-}
+};
+
+export default HeaderView;
