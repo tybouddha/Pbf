@@ -8,7 +8,7 @@ import {
 import styles from "../../styles/sharedStyles/CustomTextInputStyles";
 
 //& au lieu d'extend pour éviter les problèmes de typage (ex: onBlur existe TouchableOpacityProps et TextInputProps mais avec des types différents)
-type CustomTextInputProps = TouchableOpacityProps &
+type CustomTextInputPropsType = TouchableOpacityProps &
   TextInputProps & {
     placeholder?: string;
     value?: string;
@@ -18,7 +18,7 @@ type CustomTextInputProps = TouchableOpacityProps &
     onPress?: () => void;
   };
 
-const CustomTextInput: React.FC<CustomTextInputProps> = ({
+const CustomTextInput: React.FC<CustomTextInputPropsType> = ({
   placeholder,
   value,
   onChangeText,

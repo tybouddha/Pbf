@@ -6,7 +6,7 @@ import { useSignupForm } from "../../hooks/useSingUpForm"; // Hook extrait dans 
 import GuideModal from "../../components/shared/GuideModal";
 import CustomTextInput from "../../components/shared/CustomTextInput";
 import CustomButton from "../../components/shared/CustomButton";
-import { useCloseModalGeneric } from "../../utils/useCloseModalGeneric";
+import { useCloseModalGeneric } from "../../utils/useCloseModalGeneric.ts";
 import TemplateViewNoNav from "../../components/Template/TemplateViewNoNav";
 import styles from "../../styles/screenStyles/CreerProjetStyles";
 

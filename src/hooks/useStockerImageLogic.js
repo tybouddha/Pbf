@@ -2,7 +2,7 @@
 import { useState, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { ajouterPhoto } from "../reducers/document";
-import { useCloseModalGeneric } from "../utils/useCloseModalGeneric";
+import { useCloseModalGeneric } from "../utils/useCloseModalGeneric.ts";
 
 export const useStockerImageLogic = ({
   photoCacheUri,

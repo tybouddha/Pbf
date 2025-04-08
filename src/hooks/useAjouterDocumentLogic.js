@@ -5,7 +5,7 @@ import {
   sauvegarderDocumentInfos,
   documentModalRestOuvert,
 } from "../reducers/document";
-import { useCloseModalGeneric } from "../utils/useCloseModalGeneric";
+import { useCloseModalGeneric } from "../utils/useCloseModalGeneric.ts";
 
 export const useAjouterDocumentLogic = ({
   navigation,

@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { globalStyles } from "../../styles/GlobalStyles";
+import { backgroundColor, textColor, primaryColor } from "../GlobalStyles";
 
 export default StyleSheet.create({
   centeredView: {
@@ -9,7 +9,7 @@ export default StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)", // Overlay semi-transparent
   },
   modalListView: {
-    backgroundColor: globalStyles.backgroundColor,
+    backgroundColor: backgroundColor,
     borderRadius: 10,
     padding: 20,
     width: "90%",
@@ -18,7 +18,7 @@ export default StyleSheet.create({
   modalTitle: {
     fontSize: 20,
     fontWeight: "bold",
-    color: globalStyles.textColor,
+    color: textColor,
     marginBottom: 15,
     textAlign: "center",
   },
@@ -31,7 +31,7 @@ export default StyleSheet.create({
     marginTop: 15,
   },
   btnModal: {
-    backgroundColor: globalStyles.primaryColor,
+    backgroundColor: primaryColor,
     padding: 10,
     borderRadius: 5,
   },
@@ -42,9 +42,9 @@ export default StyleSheet.create({
     padding: 20,
     alignItems: "center",
   },
-  modalTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
+  // modalTitle: {
+  //   fontSize: 20,
+  //   fontWeight: "bold",
+  //   marginBottom: 10,
+  // },
 });

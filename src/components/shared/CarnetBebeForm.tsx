@@ -3,7 +3,7 @@ import { TouchableOpacity, Text, View } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import CustomTextInput from "./CustomTextInput";
 
-interface CarnetBebeFormProps {
+type CarnetBebeFormPropsType = {
   dateValue?: string;
   setDateValue?: (date: string) => void;
   coucherValue?: string;
@@ -24,9 +24,9 @@ interface CarnetBebeFormProps {
   isDatePickerVisible?: boolean;
   handleDatePicked?: (event: any, date?: Date) => void;
   fieldName?: string;
-}
+};
 
-const CarnetBebeForm: React.FC<CarnetBebeFormProps> = ({
+const CarnetBebeForm: React.FC<CarnetBebeFormPropsType> = ({
   dateValue,
   setDateValue,
   coucherValue,

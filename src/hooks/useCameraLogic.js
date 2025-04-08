@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Camera } from "expo-camera"; // Pour les permissions
 import { useIsFocused } from "@react-navigation/native";
 import { documentModalRestOuvert } from "../reducers/document";
-import { useCloseModalGeneric } from "../utils/useCloseModalGeneric";
+import { useCloseModalGeneric } from "../utils/useCloseModalGeneric.ts";
 
 export const useCameraLogic = (navigation) => {
   const dispatch = useDispatch();

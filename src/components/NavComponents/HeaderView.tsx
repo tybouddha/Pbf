@@ -13,14 +13,14 @@ import { RootState } from "../../../store";
 
 const defaultLogo = require("../../../assets/images/images/logo128.png");
 
-interface HeaderViewProps {
+type HeaderViewPropsType = {
   navigation: NavigationProp<any>;
   afficherArriere?: boolean;
   cacheProfile?: boolean;
   logo?: ImageSourcePropType;
-}
+};
 
-const HeaderView: React.FC<HeaderViewProps> = ({
+const HeaderView: React.FC<HeaderViewPropsType> = ({
   navigation,
   afficherArriere = false,
   cacheProfile = false,

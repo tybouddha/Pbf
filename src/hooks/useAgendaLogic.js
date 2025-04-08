@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { useCloseModalGeneric } from "../utils/useCloseModalGeneric";
+import { useCloseModalGeneric } from "../utils/useCloseModalGeneric.ts";
 
 export const useAgendaLogic = (user, navigation) => {
   const projectToken = user.tokenProject;

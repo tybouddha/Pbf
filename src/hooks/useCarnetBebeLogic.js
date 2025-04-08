@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { useSelector } from "react-redux";
-import { useCloseModalGeneric } from "../utils/useCloseModalGeneric";
+import { useCloseModalGeneric } from "../utils/useCloseModalGeneric.ts";
 
 export const useCarnetBebeLogic = (navigation) => {
   const closeModalGeneric = useCloseModalGeneric();

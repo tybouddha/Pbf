@@ -1,6 +1,6 @@
 // src/hooks/useModalLogic.js
 import { useCallback } from "react";
-import { useCloseModalGeneric } from "../utils/useCloseModalGeneric";
+import { useCloseModalGeneric } from "../utils/useCloseModalGeneric.ts";
 
 export const useModalLogic = () => {
   const closeModal = useCloseModalGeneric();

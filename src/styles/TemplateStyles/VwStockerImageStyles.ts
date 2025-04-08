@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { globalStyles } from "../GlobalStyles";
+import { backgroundColor, textColor, primaryColor } from "../GlobalStyles";
 
 export default StyleSheet.create({
   modalOverlay: {
@@ -9,7 +9,7 @@ export default StyleSheet.create({
     alignItems: "center",
   },
   modalBackground: {
-    backgroundColor: globalStyles.backgroundColor,
+    backgroundColor: backgroundColor,
     borderRadius: 10,
     padding: 20,
     width: "80%",
@@ -17,7 +17,7 @@ export default StyleSheet.create({
   },
   textMessage: {
     fontSize: 18,
-    color: globalStyles.textColor,
+    color: textColor,
     marginBottom: 20,
   },
   photoContainer: {
@@ -29,7 +29,7 @@ export default StyleSheet.create({
     borderRadius: 5,
   },
   btnModal: {
-    backgroundColor: globalStyles.primaryColor,
+    backgroundColor: primaryColor,
     padding: 10,
     borderRadius: 5,
     marginVertical: 5,

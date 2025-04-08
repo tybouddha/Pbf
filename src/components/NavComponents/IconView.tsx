@@ -4,15 +4,15 @@ import { Text, View } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome5";
 import styles from "../../styles/NavComponentsStyles/IconViewStyles";
 
-interface IconViewProps {
+type IconViewPropsType = {
   iconName: string; // Nom de l'icône FontAwesome
   size: number; // Taille de l'icône
   color: string; // Couleur de l'icône
   focused: boolean; // État focused pour la navigation
   screenName: string; // Nom de l'écran affiché
-}
+};
 
-const IconView: React.FC<IconViewProps> = ({
+const IconView: React.FC<IconViewPropsType> = ({
   iconName,
   size,
   color,

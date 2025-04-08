@@ -2,15 +2,15 @@ import React from "react";
 import { Modal, Text, View } from "react-native";
 import styles from "../../styles/sharedStyles/FormModalStyles";
 
-interface FormModalProps {
+type FormModalPropsType = {
   visible: boolean;
   onClose: () => void;
   title?: string;
   formContent: React.ReactNode;
   actions?: React.ReactNode;
-}
+};
 
-const FormModal: React.FC<FormModalProps> = ({
+const FormModal: React.FC<FormModalPropsType> = ({
   visible,
   onClose,
   title,

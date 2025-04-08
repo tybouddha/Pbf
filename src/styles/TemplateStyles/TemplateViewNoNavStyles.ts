@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { globalStyles } from "../GlobalStyles";
+import { primaryColor } from "../GlobalStyles";
 
 export default StyleSheet.create({
   background: {
@@ -18,6 +18,6 @@ export default StyleSheet.create({
   vwFooter: {
     height: "10%", // Hauteur fixe pour le footer, ajustable si besoin
     width: "100%",
-    backgroundColor: globalStyles.primaryColor, // Exemple avec couleur globale
+    backgroundColor: primaryColor, // Exemple avec couleur globale
   },
 });

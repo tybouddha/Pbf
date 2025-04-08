@@ -3,14 +3,14 @@ import { Modal, Text, View, ScrollView } from "react-native";
 import CustomButton from "./CustomButton";
 import styles from "../../styles/sharedStyles/ModalStyles";
 
-interface GuideModalProps {
+type GuideModalPropsType = {
   visible: boolean;
   onClose: () => void;
   title?: string;
   content: React.ReactNode;
-}
+};
 
-const GuideModal: React.FC<GuideModalProps> = ({
+const GuideModal: React.FC<GuideModalPropsType> = ({
   visible,
   onClose,
   title,

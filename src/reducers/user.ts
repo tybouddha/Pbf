@@ -1,6 +1,20 @@
-import { createSlice } from "@reduxjs/toolkit";
+// src/reducers/user.ts
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState = {
+// Interface pour l'état de l'utilisateur
+interface UserState {
+  value: {
+    token: string | null;
+    projectId: string | null;
+    username: string | null;
+    email: string | null;
+    tokenProject: string | null;
+    role: string | null;
+  };
+}
+
+// État initial typé
+const initialState: UserState = {
   value: {
     token: null,
     projectId: null,
@@ -11,11 +25,21 @@ const initialState = {
   },
 };
 
+// Interface pour le payload de loginUser
+interface LoginPayload {
+  token: string;
+  projectId: string;
+  username: string;
+  email: string;
+  tokenProject: string;
+  role: string;
+}
+
 export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    loginUser: (state, action) => {
+    loginUser: (state, action: PayloadAction<LoginPayload>) => {
       // console.log(`- dans Redux: loginUser 🔔`);
       state.value.token = action.payload.token;
       state.value.projectId = action.payload.projectId;
@@ -38,3 +62,6 @@ export const userSlice = createSlice({
 
 export const { loginUser, logoutUser } = userSlice.actions;
 export default userSlice.reducer;
+
+// Export du type de l'état pour réutilisation
+export type { UserState };
