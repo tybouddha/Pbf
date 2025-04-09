@@ -1,7 +1,6 @@
-// src/App.js
-import { StatusBar } from "expo-status-bar";
+// import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
+// import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -9,7 +8,7 @@ import { Provider } from "react-redux";
 import * as Font from "expo-font";
 import { useState, useEffect } from "react";
 
-import store from "./store"; // Import du store
+import store from "./store";
 import AccueilScreen from "./src/screens/AcceuilScreen";
 import AgendaScreen from "./src/screens/AgendaScreen";
 import DocumentsScreen from "./src/screens/DocumentsScreen";
@@ -25,8 +24,8 @@ import IconView from "./src/components/NavComponents/IconView";
 
 // Hook pour charger les polices (optionnel)
 const useLoadFonts = () => {
-  const [fontsLoaded, setFontsLoaded] = useState(false);
-  const [loadingError, setLoadingError] = useState(null);
+  const [fontsLoaded, setFontsLoaded] = useState<boolean>(false);
+  const [loadingError, setLoadingError] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadFonts() {
@@ -35,10 +34,14 @@ const useLoadFonts = () => {
           Caveat: require("./assets/fonts/Caveat-VariableFont_wght.ttf"),
         });
         setFontsLoaded(true);
-      } catch (error) {
-        setLoadingError(
-          "Erreur lors du chargement des polices : " + error.message
-        );
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          setLoadingError(
+            "Erreur lors du chargement des polices : " + error.message
+          );
+        } else {
+          setLoadingError("Une erreur inconnue est survenue");
+        }
       }
     }
     loadFonts();
