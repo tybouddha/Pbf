@@ -1,5 +1,3 @@
-// src/store.js
-// src/store.ts
 import { configureStore } from "@reduxjs/toolkit";
 import rootReducer from "./src/reducers"; // Ajusté le chemin relatif
 

@@ -1,26 +1,72 @@
 import { useState, useCallback, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, NavigationProp } from "@react-navigation/native";
+import { DocumentPhotoType } from "../reducers/document";
+import { RootState } from "../../store";
 import {
   sauvegarderDocumentInfos,
   documentModalRestOuvert,
 } from "../reducers/document";
-import { useCloseModalGeneric } from "../utils/useCloseModalGeneric.ts";
+import {
+  useCloseModalGeneric,
+  SetModalStateType,
+} from "../utils/useCloseModalGeneric";
+
+type NavigationType = NavigationProp<any>;
+
+type DocumentValueType = {
+  nom: string | null;
+  practicien: string | null;
+  notes: string | null;
+  photos: DocumentPhotoType[];
+  modalOuvert: boolean;
+};
+
+type UserValueType = {
+  token: string | null;
+  tokenProject: string | null;
+};
+
+type AjouterDocumentLogicReturn = {
+  nom: string;
+  setNom: React.Dispatch<React.SetStateAction<string>>;
+  practicien: string;
+  setPracticien: React.Dispatch<React.SetStateAction<string>>;
+  notes: string;
+  setNotes: React.Dispatch<React.SetStateAction<string>>;
+  errorMessage: string | null;
+  imagesArr: {
+    uri: string; // Corrigé de DocumentPhotoType à string
+    index: number;
+  }[];
+  handleCameraPress: () => void;
+  handleSubmit: () => Promise<void>;
+  closeModalGeneric: (setModalState: SetModalStateType) => void;
+};
 
 export const useAjouterDocumentLogic = ({
   navigation,
   fetchDocumentsData,
   onClose,
-}) => {
-  const documentRedux = useSelector((state) => state.document.value);
-  const userRedux = useSelector((state) => state.user.value);
+}: {
+  navigation: NavigationType;
+  fetchDocumentsData: () => void;
+  onClose: SetModalStateType;
+}): AjouterDocumentLogicReturn => {
+  const documentRedux: DocumentValueType = useSelector<
+    RootState,
+    DocumentValueType
+  >((state) => state.document.value);
+  const userRedux: UserValueType = useSelector<RootState, UserValueType>(
+    (state) => state.user.value
+  );
   const dispatch = useDispatch();
   const closeModalGeneric = useCloseModalGeneric();
 
-  const [nom, setNom] = useState("");
-  const [practicien, setPracticien] = useState("");
-  const [notes, setNotes] = useState("");
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [nom, setNom] = useState<string>("");
+  const [practicien, setPracticien] = useState<string>("");
+  const [notes, setNotes] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   // Synchronisation avec Redux au focus
   useFocusEffect(
@@ -34,7 +80,7 @@ export const useAjouterDocumentLogic = ({
   // Rendu optimisé des photos
   const imagesArr = useMemo(() => {
     return documentRedux.photos.map((elem, index) => ({
-      uri: elem,
+      uri: elem.url, // Corrigé pour utiliser elem.url
       index,
     }));
   }, [documentRedux.photos]);
@@ -62,7 +108,7 @@ export const useAjouterDocumentLogic = ({
       nom,
       practicien,
       notes,
-      url: documentRedux.photos,
+      url: documentRedux.photos.map((photo) => photo.url), // Corrigé pour envoyer un tableau d'URLs
     };
 
     try {
@@ -81,8 +127,11 @@ export const useAjouterDocumentLogic = ({
       } else {
         setErrorMessage(resJson.error || "Erreur lors de l’ajout du document");
       }
-    } catch (error) {
-      setErrorMessage("Erreur réseau : " + error.message);
+    } catch (error: unknown) {
+      const errorMsg =
+        error instanceof Error ? error.message : "Erreur inconnue";
+      console.error("Erreur réseau :", errorMsg);
+      setErrorMessage("Erreur réseau : " + errorMsg); // Réactivé pour l'utilisateur
     }
   }, [
     nom,

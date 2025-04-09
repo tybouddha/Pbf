@@ -1,25 +1,24 @@
-// src/reducers/document.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // Interface pour un document individuel (pour les photos)
-interface DocumentPhoto {
+type DocumentPhotoType = {
   id: string; // Ajouté pour identifier chaque photo
   url: string; // Exemple : URL ou chemin de la photo
-}
+};
 
 // Interface pour l'état du document
-interface DocumentState {
+type DocumentStateType = {
   value: {
     nom: string | null;
     practicien: string | null;
     notes: string | null;
-    photos: DocumentPhoto[]; // Typé comme tableau d'objets
+    photos: DocumentPhotoType[]; // Typé comme tableau d'objets
     modalOuvert: boolean;
   };
-}
+};
 
 // État initial typé
-const initialState: DocumentState = {
+const initialState: DocumentStateType = {
   value: {
     nom: null,
     practicien: null,
@@ -94,4 +93,4 @@ export const {
 export default documentSlice.reducer;
 
 // Export des types pour réutilisation
-export type { DocumentState, DocumentPhoto };
+export type { DocumentStateType, DocumentPhotoType };

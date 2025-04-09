@@ -2,7 +2,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // Interface pour l'état de l'utilisateur
-interface UserState {
+type UserStateType = {
   value: {
     token: string | null;
     projectId: string | null;
@@ -11,10 +11,10 @@ interface UserState {
     tokenProject: string | null;
     role: string | null;
   };
-}
+};
 
 // État initial typé
-const initialState: UserState = {
+const initialState: UserStateType = {
   value: {
     token: null,
     projectId: null,
@@ -64,4 +64,4 @@ export const { loginUser, logoutUser } = userSlice.actions;
 export default userSlice.reducer;
 
 // Export du type de l'état pour réutilisation
-export type { UserState };
+export type { UserStateType };
