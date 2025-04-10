@@ -131,7 +131,7 @@ export const useAjouterDocumentLogic = ({
       const errorMsg =
         error instanceof Error ? error.message : "Erreur inconnue";
       console.error("Erreur réseau :", errorMsg);
-      setErrorMessage("Erreur réseau : " + errorMsg); // Réactivé pour l'utilisateur
+      setErrorMessage("Erreur réseau : " + errorMsg);
     }
   }, [
     nom,
