@@ -1,21 +1,11 @@
 import { useState, useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { NavigationProp } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../reducers/user";
 import { RootState } from "../../store";
 
 // Typage de la navigation
 type NavigationType = NavigationProp<any>;
-
-// Interface pour le payload de loginUser
-type LoginPayloadType = {
-  username: string;
-  token: string;
-  projectId: string;
-  email: string;
-  tokenProject: string;
-  role: string;
-};
 
 // Typage des données utilisateur depuis Redux (aligné avec LoginPayload)
 type UserValueType = {
@@ -29,25 +19,27 @@ type UserValueType = {
 
 // Typage des données du formulaire
 type FormDataType = {
-  link: string;
   username: string;
   password: string;
 };
 
-// Typage de la réponse API pour l'invitation (adapté à LoginPayload)
-type InviteResponseType = {
-  data?: {
-    tokenUser: string; // Correspond à "token" dans LoginPayload
-    tokenProject: string;
+// Typage de la réponse API pour la connexion
+type LoginResponseType = {
+  result?: boolean;
+  response?: {
+    token: string;
+    project: {
+      _id: string;
+      token: string;
+    };
     role: string;
-    projectId: string; // Ajouté pour LoginPayload
-    email: string; // Ajouté pour LoginPayload
+    email: string; // Ajouté pour correspondre à LoginPayload
   };
   error?: string;
 };
 
 // Typage du retour du hook
-type InviteFormReturnType = {
+type LoginFormReturnType = {
   modalEchecVisible: boolean;
   setModalEchecVisible: React.Dispatch<React.SetStateAction<boolean>>;
   formData: FormDataType;
@@ -60,16 +52,15 @@ type InviteFormReturnType = {
 };
 
 // Définition du hook avec typage
-export const useInviteForm = (
+export const useLoginForm = (
   navigation: NavigationType
-): InviteFormReturnType => {
+): LoginFormReturnType => {
   const dispatch = useDispatch();
   const userReducer = useSelector<RootState, UserValueType>(
     (state) => state.user.value
   );
 
   const [formData, setFormData] = useState<FormDataType>({
-    link: "",
     username: "",
     password: "",
   });
@@ -85,7 +76,7 @@ export const useInviteForm = (
 
   const submitForm = useCallback(async (): Promise<void> => {
     console.log("Soumission déclenchée avec :", formData);
-    if (!formData.link || !formData.username || !formData.password) {
+    if (!formData.username || !formData.password) {
       setMessageError("Tous les champs sont requis");
       setModalEchecVisible(true);
       return;
@@ -95,29 +86,26 @@ export const useInviteForm = (
 
     try {
       const response = await fetch(
-        `${process.env.EXPO_PUBLIC_API_URL}/user/invites/${formData.link}`,
+        `${process.env.EXPO_PUBLIC_API_URL}/user/signin`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            username: formData.username,
-            password: formData.password,
-          }),
+          body: JSON.stringify(formData),
         }
       );
-      const data = (await response.json()) as InviteResponseType;
+      const data = (await response.json()) as LoginResponseType;
 
       console.log("Réponse backend :", data);
 
-      if (data.data) {
+      if (data.result && data.response) {
         dispatch(
           loginUser({
             username: formData.username,
-            token: data.data.tokenUser,
-            tokenProject: data.data.tokenProject,
-            role: data.data.role,
-            projectId: data.data.projectId,
-            email: data.data.email,
+            token: data.response.token,
+            projectId: data.response.project._id,
+            email: data.response.email,
+            tokenProject: data.response.project.token,
+            role: data.response.role,
           })
         );
         navigation.navigate("TabNavigator");
