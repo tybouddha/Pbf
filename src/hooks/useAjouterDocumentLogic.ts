@@ -80,7 +80,7 @@ export const useAjouterDocumentLogic = ({
   // Rendu optimisé des photos
   const imagesArr = useMemo(() => {
     return documentRedux.photos.map((elem, index) => ({
-      uri: elem.url, // Corrigé pour utiliser elem.url
+      uri: elem.url,
       index,
     }));
   }, [documentRedux.photos]);
