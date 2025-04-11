@@ -27,9 +27,9 @@ const initialState: UserStateType = {
 
 // Interface pour le payload de loginUser
 interface LoginPayload {
+  username: string;
   token: string;
   projectId: string;
-  username: string;
   email: string;
   tokenProject: string;
   role: string;
